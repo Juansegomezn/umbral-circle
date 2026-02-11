@@ -1,3 +1,75 @@
 .rightBar{
   flex: 3;
+  height: calc(100vh - 60px);
+  position: sticky;
+  top: 60px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  .container{
+    padding: 20px 30px;
+    .item{
+      box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.2);
+      padding: 10px 20px;
+      margin-bottom: 20px;
+      span{
+        color: #ccc;
+      }
+      .user{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0px;
+        span{
+          font-size: 12px;
+        }
+        .user-info{
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          position: relative;
+          img{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+          p{
+            font-size: 14px;
+            color: #ccc;
+          }
+          span{
+            font-size: 16px;
+            color: #1E293B;
+            font-weight: 500;
+          }
+          .online{
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #4ade80;
+            top: 0px;
+            left: 30px
+          }
+        }
+        .buttons{
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          button{
+            border: none;
+            padding: 5px 10px;
+            color: #FFFFFF;
+            cursor: pointer;
+            &:first-child{
+              background-color: #5271ff;
+            }
+            &:last-child{
+              background-color: #f0544f;
+            }
+          }
+        }
+      }
+    }
+  }
 }
