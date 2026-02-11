@@ -12,7 +12,7 @@ export const Register = () => {
             Create your account to start sharing your world with us.
           </p>
           <span>Already have an account?</span>
-          <Link to="/login">
+          <Link to="/login" style={{width:'60%'}}>
             <button>Login</button>
           </Link>
         </div>

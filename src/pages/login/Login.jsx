@@ -12,7 +12,7 @@ export const Login = () => {
             Join our community and start your journey today.
           </p>
           <span>Don't you have an account yet?</span>
-          <Link to="/register">
+          <Link to="/register" style={{width:'60%'}}>
             <button>Register</button>
           </Link>
         </div>
