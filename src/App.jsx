@@ -11,12 +11,14 @@ import { RouterProvider } from "react-router/dom";
 
 const Layout = () => {
   return (
+    <>
+    <Navbar />
     <div style={{display:'flex'}}>
-      <Navbar />
       <LeftBar />
       <Outlet />
       <RightBar />
     </div>
+    </>
   )
 }
 const ProtectedURL = ({ children, currentUser }) => {
@@ -27,7 +29,7 @@ const ProtectedURL = ({ children, currentUser }) => {
 };
 
 function App() {
-  const currentUser = false;
+  const currentUser = true;
 
   const router = createBrowserRouter([
     {
