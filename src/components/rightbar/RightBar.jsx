@@ -1,4 +1,4 @@
-import 'rightBar.scss'
+import './rightBar.scss'
 
 export const RightBar = () => {
   return (
