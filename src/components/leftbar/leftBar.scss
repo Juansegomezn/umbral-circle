@@ -1,49 +1,62 @@
-.leftBar{
-  flex: 2;
-  height: calc(100vh - 60px);
-  padding: 20px 30px;
-  position: sticky;
-  top: 60px;
-  overflow-y: auto;
-  scrollbar-width: none;
-  // scrollbar-width: thin;
-  // scrollbar-color: #ccc transparent;
-  .container{
-    hr{
-      margin: 25px 5px;
-      height: 0.5px;
-      background-color: #ccc;
+@import '../../global.scss';
+
+.leftBar {
+  @include themify($themes) {
+    flex: 2;
+    height: calc(100vh - 60px);
+    padding: 20px 30px;
+    position: sticky;
+    top: 60px;
+    overflow-y: auto;
+    background-color: themed("bg");
+    color: themed("textColor");
+    &::-webkit-scrollbar {
+      display: none;
     }
-    .menu{
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      span{
-        font-size: 12px;
+    scrollbar-width: none;
+    .container {
+      hr {
+        margin: 25px 5px;
+        border: none;
+        height: 0.5px;
+        background-color: themed("border");
       }
-      .user{
+      .menu {
         display: flex;
-        align-items: center;
-        gap: 10px;
-        img{
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          object-fit: cover;
+        flex-direction: column;
+        gap: 20px;
+        span {
+          font-size: 12px;
+          color: themed("textColorsoft");
         }
-        span{
-          font-size: 14px;
+        .user {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          cursor: pointer;
+          img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+          span {
+            font-size: 14px;
+            color: themed("textColor");
+          }
         }
-      }
-      .item{
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        img{
-          width: 30px;
-        }
-        span{
-          font-size: 14px;
+        .item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          cursor: pointer;
+          img {
+            width: 30px;
+          }
+          span {
+            font-size: 14px;
+            color: themed("textColor");
+          }
         }
       }
     }
