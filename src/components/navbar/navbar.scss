@@ -1,55 +1,78 @@
+@import '../../global.scss';
+
 .navbar{
-  display: flex; 
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-  padding: 10px 20px;
-  border-bottom: 1px solid #ccc;
-  
-  .left{
+  @include themify($themes){
     display: flex;
     align-items: center;
-    gap: 20px;
-    span{
-      font-size: 22px;
-      font-weight: bold;
-      color: #F43F5E;
-    }
-  }
-  .search{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #FFFFFF;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 5px;
+    justify-content: space-between;
+    height: 60px;
+    padding: 10px 20px;
+    border-bottom: 0.5px solid themed('border');
+    background-color: themed('bg');
+    color: themed('textColor');
     position: sticky;
     top: 0;
-    input{
-      width: 480px;
-      border: none;
-      outline: none;
-      padding: 5px;
+    z-index: 99;
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      span {
+        font-size: 22px;
+        font-weight: bold;
+        color: themed('logo');
+      }
+      svg {
+        cursor: pointer;
+        color: themed('textColor');
+      }
     }
-  }
-  .right{
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    font-weight: 500;
-    .user{
+    .search {
       display: flex;
       align-items: center;
       gap: 10px;
-      img{
-        width: 40px;
-        height: 40px;
-        object-fit: cover;
-        border-radius: 50%;
+      background-color: themed('bgSoft');
+      border: 1px solid themed('border');
+      padding: 5px 10px;
+      border-radius: 5px;
+      input {
+        width: 480px;
+        border: none;
+        outline: none;
+        padding: 5px;
+        background-color: transparent;
+        color: themed('textColor');
+        &::placeholder {
+          color: themed('textColorsoft');
+        }
       }
-      span{
-
+      svg {
+        color: themed('textColorsoft');
+      }
+    }
+    .right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-weight: 500;
+      svg {
+        cursor: pointer;
+        color: themed('textColor');
+      }
+      .user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        img {
+          width: 40px;
+          height: 40px;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+        span {
+          color: themed('textColor');
+        }
       }
     }
   }
