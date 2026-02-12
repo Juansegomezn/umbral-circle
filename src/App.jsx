@@ -11,16 +11,16 @@ import { RouterProvider } from "react-router/dom";
 
 const Layout = () => {
   return (
-    <>
-    <Navbar />
-    <div style={{display:'flex'}}>
-      <LeftBar />
-      <div style={{flex:6}}>
-        <Outlet />
+    <div className="theme-dark">
+      <Navbar />
+      <div style={{display:'flex'}}>
+        <LeftBar />
+        <div style={{flex:6}}>
+          <Outlet />
+        </div>
+        <RightBar />
       </div>
-      <RightBar />
     </div>
-    </>
   )
 }
 const ProtectedURL = ({ children, currentUser }) => {

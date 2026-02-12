@@ -3,8 +3,48 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   line-height: 1.5;
+}
+
+
+$themes: (light: (
+    textColor: #1E293B,
+    bg: #FFFFFF,
+    logo: #F43F5E,
+    bgSoft: #F8FAFC,
+    textColorsoft: #64748B,
+    border: #E2E8F0,
+  ),
+  dark: (
+    textColor: #F1F5F9,
+    bg: #0F172A,
+    logo: #FB923C,
+    bgSoft: #1E293B,
+    textColorsoft: #94A3B8,
+    border: #334155,
+  ),
+);
+
+@mixin themify($themes) {
+  @each $theme, $map in $themes {
+    .theme-#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), "#{$key}");
+        $theme-map: map-merge(
+          $theme-map,
+          (
+            $key: $value,
+          )
+        ) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+@function themed($key) {
+  @return map-get($theme-map, $key);
 }
