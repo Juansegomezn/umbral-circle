@@ -9,6 +9,7 @@ import { Register } from "./pages/register/Register"
 import { createBrowserRouter, Navigate, Outlet } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { DarkModeContext } from "./context/darkModeContext";
+import { AuthContext } from "./context/authContext";
 
 
 const Layout = () => {
@@ -35,7 +36,7 @@ const ProtectedURL = ({ children, currentUser }) => {
 };
 
 function App() {
-  const currentUser = true;
+  const currentUser = useContext(AuthContext);
 
   const router = createBrowserRouter([
     {
