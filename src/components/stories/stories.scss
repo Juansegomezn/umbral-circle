@@ -1,0 +1,47 @@
+.stories{
+  display: flex;
+  gap: 10px;
+  height: 250px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .story{
+    flex: 0 0 130px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    span{
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      color: #FFFFFF;
+      font-weight: 500;
+    }
+    button{
+      position: absolute;
+      bottom: 40px;
+      left: 10px;
+      color: #FFFFFF;
+      background-color: #F43F5E;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;transition: transform 0.2s ease;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
