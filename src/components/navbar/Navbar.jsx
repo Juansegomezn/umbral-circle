@@ -24,8 +24,8 @@ export const Navbar = () => {
         </Link>
         <HomeOutlinedIcon />
         { darkMode 
-        ? <WbSunnyOutlinedIcon onClick={toggle}/>        
-        : <BedtimeOutlinedIcon onClick={toggle}/>
+          ? <WbSunnyOutlinedIcon onClick={toggle}/>        
+          : <BedtimeOutlinedIcon onClick={toggle}/>
         }
         <AppsOutlinedIcon />
       </div>

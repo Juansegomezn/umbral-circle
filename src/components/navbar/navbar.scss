@@ -36,6 +36,13 @@
       border: 1px solid themed('border');
       padding: 5px 10px;
       border-radius: 5px;
+      @include mobile {
+        border: none;
+        background-color: transparent;
+      }
+      @include tablet {
+        width: 200px;
+      }
       input {
         width: 480px;
         border: none;
@@ -43,6 +50,12 @@
         padding: 5px;
         background-color: transparent;
         color: themed('textColor');
+        @include tablet {
+          width: 200px;
+        }
+        @include mobile {
+          display: none;
+        }
         &::placeholder {
           color: themed('textColorSoft');
         }
@@ -59,6 +72,9 @@
       svg {
         cursor: pointer;
         color: themed('textColor');
+        @include mobile {
+          display: none;
+        }
       }
       .user {
         display: flex;
@@ -73,6 +89,12 @@
         }
         span {
           color: themed('textColor');
+          @include mobile {
+            display: none;
+          }
+          @include tablet {
+            display: none;
+          }
         }
       }
     }
