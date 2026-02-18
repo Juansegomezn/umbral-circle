@@ -44,11 +44,11 @@
         background-color: transparent;
         color: themed('textColor');
         &::placeholder {
-          color: themed('textColorsoft');
+          color: themed('textColorSoft');
         }
       }
       svg {
-        color: themed('textColorsoft');
+        color: themed('textColorSoft');
       }
     }
     .right {
