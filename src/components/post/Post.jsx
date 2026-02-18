@@ -8,12 +8,12 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Comments } from '../comments/Comments';
 
-export const Post = ({post, key}) => {
+export const Post = ({post}) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const liked = false;
 
   return (
-    <div className='post' key={key}>
+    <div className='post'>
       <div className="container">
         <div className="user">
           <div className="userInfo">
