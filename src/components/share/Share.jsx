@@ -24,17 +24,17 @@ export const Share = () => {
             <input type="file" id="file" style={{display:"none"}} />
             <label htmlFor="file">
               <div className="item">
-                <PeopleAltIcon />
+                <ImageIcon />
                 <span>Add Image</span>
               </div>
             </label>
             <div className="item">
-              <ImageIcon />
-              <span>Add Place</span>
+              <PeopleAltIcon />
+              <span>Tag Friends</span>
             </div>
             <div className="item">
               <MapIcon />
-              <span>Tag Friends</span>
+              <span>Add Place</span>
             </div>
           </div>
           <div className="right">
