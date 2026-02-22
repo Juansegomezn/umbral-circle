@@ -1,9 +1,14 @@
+@import "../../global.scss";
+
 .login {
   height: 100vh;
   background-color: #ebabb6;
   display: flex;
   align-items: center;
   justify-content: center;
+  @include mobile {
+    background-color: #FFFFFF;
+  }
   .card {
     width: 60%;
     display: flex;
@@ -11,6 +16,14 @@
     border-radius: 8px;
     min-height: 580px;
     overflow: hidden;
+    @include mobile {
+      width: 100%;
+      flex-direction: column;
+      border-radius: 0;
+    }
+    @include tablet {
+      width: 90%;
+    }
     .left {
       flex: 1;
       background: linear-gradient(rgba(46, 1, 1, 0.5), rgba(46, 1, 1, 0.5)), 
@@ -21,6 +34,9 @@
       flex-direction: column;
       gap: 30px;
       color: #FFFFFF;
+      @include mobile {
+        display: none;
+      }
       h1 {
         font-size: 80px;
         line-height: 70px;
@@ -45,6 +61,10 @@
       flex-direction: column;
       justify-content: center;
       gap: 50px;
+      @include mobile {
+        padding: 20px;
+        gap: 30px;
+      }
       h1 {
         font-size: 40px;
         color: #1E293B;
@@ -69,6 +89,9 @@
             color: #FFFFFF;
             font-weight: bold;
             cursor: pointer;
+            @include mobile {
+              width: 100%;
+            }
           }
         }
       }
