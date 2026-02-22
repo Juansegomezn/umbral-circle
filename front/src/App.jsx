@@ -36,7 +36,7 @@ const ProtectedURL = ({ children, currentUser }) => {
 };
 
 function App() {
-  const currentUser = useContext(AuthContext);
+  const {currentUser} = useContext(AuthContext);
 
   const router = createBrowserRouter([
     {
