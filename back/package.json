@@ -1,14 +1,15 @@
 {
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "express": "^5.2.1",
     "mysql": "^2.18.1",
+    "mysql2": "^3.18.0",
     "nodemon": "^3.1.14"
   },
   "name": "back",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "start": "nodemon index.js"
   },

@@ -1,12 +1,14 @@
-import Express from "express";
+import express from "express";
 import authRoutes from "./routes/auth.js";
 import usersRoutes from "./routes/users.js";
 import postsRoutes from "./routes/posts.js";
 import commentsRoutes from "./routes/comments.js";
 import likesRoutes from "./routes/likes.js";
 
+const app = express();
 
-const app = Express();
+// middleware
+app.use(express.json());
 
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
