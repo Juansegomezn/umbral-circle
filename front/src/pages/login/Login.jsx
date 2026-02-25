@@ -44,12 +44,12 @@ export const Login = () => {
         </div>
         <div className="right">
           <h1>Login</h1>
-          <form>
+          <form onSubmit={handleLogin}>
             <input type="text" placeholder='Username' name='username' onChange={handleChange}/>
             <input type="password" placeholder='Password' name='password' onChange={handleChange}/>
             {err && <span style={{color:'red', fontSize:'12px'}}>{err}</span>}
             <div className="button-box">
-              <button onClick={handleLogin}>Login</button>
+              <button type="submit">Login</button>
             </div>
           </form>
         </div>

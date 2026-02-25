@@ -18,7 +18,7 @@ export const Register = () => {
     if(err) setErr(null);
   };
   
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:3000/auth/register', inputs);
@@ -44,14 +44,14 @@ export const Register = () => {
         </div>
         <div className="right">
           <h1>Register</h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleRegister}>
             <input type="text" placeholder='Username' name='username' onChange={handleChange}/>
             <input type="email" placeholder='Email' name='email' onChange={handleChange}/>
             <input type="password" placeholder='Password' name='password' onChange={handleChange}/>
             <input type="text" placeholder='Full Name' name='name' onChange={handleChange}/>
             {err && <span style={{color:'red', fontSize:'12px'}}>{err}</span>}
             <div className="button-box">
-              <button onClick={handleSubmit}>Register</button>
+              <button type='submit'>Register</button>
             </div>
           </form>
         </div>
