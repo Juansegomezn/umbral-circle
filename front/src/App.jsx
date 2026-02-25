@@ -10,22 +10,26 @@ import { createBrowserRouter, Navigate, Outlet } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 
 const Layout = () => {
-  const {darkMode} = useContext(DarkModeContext);  
+  const {darkMode} = useContext(DarkModeContext);
+  const queryClient = new QueryClient();
   
   return (
-    <div className={`theme-${darkMode ? 'dark' : 'light'}`}>
-      <Navbar />
-      <div style={{display:'flex'}}>
-        <LeftBar />
-        <div style={{flex:6, minWidth:0}}>
-          <Outlet />
+    <QueryClientProvider client={queryClient}>
+      <div className={`theme-${darkMode ? 'dark' : 'light'}`}>
+        <Navbar />
+        <div style={{display:'flex'}}>
+          <LeftBar />
+          <div style={{flex:6, minWidth:0}}>
+            <Outlet />
+          </div>
+          <RightBar />
         </div>
-        <RightBar />
       </div>
-    </div>
+    </QueryClientProvider>
   )
 }
 const ProtectedURL = ({ children, currentUser }) => {
@@ -66,11 +70,7 @@ function App() {
     },
   ]);
 
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App
