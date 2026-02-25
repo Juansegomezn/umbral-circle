@@ -1,7 +1,33 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './register.scss'
+import axios from 'axios'
+import { useState } from 'react';
 
 export const Register = () => {
+  const [inputs, setInputs] = useState({
+    username: '',
+    email: '',
+    password: '',
+    name: ''
+  });
+  const [err, setErr] = useState(null);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    if(err) setErr(null);
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:3000/auth/register', inputs);
+      navigate('/login');
+    } catch (err) {
+      setErr(err.response?.data || 'An error occurred during registration. Please try again.');
+    }
+  }
+  
   return (
     <div className="register">
       <div className="card">
@@ -18,13 +44,14 @@ export const Register = () => {
         </div>
         <div className="right">
           <h1>Register</h1>
-          <form>
-            <input type="text" placeholder='Username'/>
-            <input type="email" placeholder='Email'/>
-            <input type="password" placeholder='Password'/>
-            <input type="text" placeholder='Full Name'/>
+          <form onSubmit={handleSubmit}>
+            <input type="text" placeholder='Username' name='username' onChange={handleChange}/>
+            <input type="email" placeholder='Email' name='email' onChange={handleChange}/>
+            <input type="password" placeholder='Password' name='password' onChange={handleChange}/>
+            <input type="text" placeholder='Full Name' name='name' onChange={handleChange}/>
+            {err && <span style={{color:'red', fontSize:'12px'}}>{err}</span>}
             <div className="button-box">
-              <button>Register</button>
+              <button onClick={handleSubmit}>Register</button>
             </div>
           </form>
         </div>

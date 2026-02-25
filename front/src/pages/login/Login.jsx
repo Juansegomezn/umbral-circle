@@ -1,14 +1,31 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './login.scss'
 import { AuthContext } from '../../context/authContext';
 import { useContext } from 'react';
+import { useState } from 'react';
 
 export const Login = () => {
   const {login} = useContext(AuthContext);
+  const [inputs, setInputs] = useState({
+    username: '',
+    password: ''
+  });
+  const [err, setErr] = useState(null);
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleChange = (e) => {
+    setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    if(err) setErr(null);
+  };
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    login();
+    try {
+      await login(inputs);
+      navigate('/');
+    } catch (err) {
+      setErr(err.response?.data || 'An error occurred during login. Please try again.');
+    }
   };
 
   return (
@@ -28,8 +45,9 @@ export const Login = () => {
         <div className="right">
           <h1>Login</h1>
           <form>
-            <input type="text" placeholder='Username'/>
-            <input type="password" placeholder='Password'/>
+            <input type="text" placeholder='Username' name='username' onChange={handleChange}/>
+            <input type="password" placeholder='Password' name='password' onChange={handleChange}/>
+            {err && <span style={{color:'red', fontSize:'12px'}}>{err}</span>}
             <div className="button-box">
               <button onClick={handleLogin}>Login</button>
             </div>
