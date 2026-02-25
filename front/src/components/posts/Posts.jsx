@@ -23,7 +23,7 @@ export const Posts = () => {
           <Post post={post} key={post.id}/>
         ))
       ) : (
-        <p>No posts found</p>
+        <p className='no-posts'>No posts found</p>
       )}
     </div>
   )

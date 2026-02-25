@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import './register.scss'
-import axios from 'axios'
 import { useState } from 'react';
+import { makeRequest } from '../../axios';
 
 export const Register = () => {
   const [inputs, setInputs] = useState({
@@ -21,7 +21,7 @@ export const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3000/auth/register', inputs);
+      await makeRequest.post('/auth/register', inputs);
       navigate('/login');
     } catch (err) {
       setErr(err.response?.data || 'An error occurred during registration. Please try again.');
