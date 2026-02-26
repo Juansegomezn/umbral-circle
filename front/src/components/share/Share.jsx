@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/authContext';
 import './share.scss'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -11,8 +11,21 @@ import CancelIcon from '@mui/icons-material/Cancel';
 export const Share = () => {
   const {currentUser} = useContext(AuthContext)
   const [file, setFile] = useState(null)
+  const [preview, setPreview] = useState(null);
   const [description, setDescription] = useState("")
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!file) {
+      setPreview(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
 
   const upload = async () => {
     try {
@@ -69,7 +82,7 @@ export const Share = () => {
         <hr />
         {file && (
           <div className="img-container">
-            <img className="file-preview" alt="" src={URL.createObjectURL(file)} />
+            <img className="file-preview" alt="" src={preview} />
             <CancelIcon className="cancel-img" onClick={() => setFile(null)} />
           </div>
         )}
