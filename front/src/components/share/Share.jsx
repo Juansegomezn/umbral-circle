@@ -6,6 +6,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import MapIcon from '@mui/icons-material/Map';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export const Share = () => {
   const {currentUser} = useContext(AuthContext)
@@ -66,7 +67,12 @@ export const Share = () => {
           />
         </div>
         <hr />
-        {file && <img className="file-preview" alt="Preview" src={URL.createObjectURL(file)} />}
+        {file && (
+          <div className="img-container">
+            <img className="file-preview" alt="" src={URL.createObjectURL(file)} />
+            <CancelIcon className="cancel-img" onClick={() => setFile(null)} />
+          </div>
+        )}
         <div className="bottom">
           <div className="left">
             <input 
