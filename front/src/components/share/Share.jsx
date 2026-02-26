@@ -13,6 +13,17 @@ export const Share = () => {
   const [description, setDescription] = useState("")
   const queryClient = useQueryClient();
 
+  const upload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await makeRequest.post("/upload", formData);
+      return res.data;
+    } catch (err) {
+      console.log('Error uploading file', err);
+    }
+  };
+
   const mutation = useMutation({
     mutationFn: (newPost) => {
       return makeRequest.post('/posts', newPost)
@@ -22,9 +33,21 @@ export const Share = () => {
     }
   })
 
-  const handleShare = (e) => {
+  const handleShare = async (e) => {
     e.preventDefault();
-    mutation.mutate({description})
+
+    if (!description.trim()) {
+      alert("Please enter a description before sharing.");
+      return;
+    }
+    
+    let imgUrl = '';
+    if (file) { imgUrl = await upload(); }
+    
+    mutation.mutate({description, img: imgUrl})
+    
+    setDescription("");
+    setFile(null);
   }
 
   return (
@@ -39,9 +62,11 @@ export const Share = () => {
             type="text" 
             placeholder={`What's on your mind ${currentUser.name}?`} 
             onChange={(e) => setDescription(e.target.value)}
+            value={description}
           />
         </div>
         <hr />
+        {file && <img className="file-preview" alt="Preview" src={URL.createObjectURL(file)} />}
         <div className="bottom">
           <div className="left">
             <input 
@@ -66,7 +91,7 @@ export const Share = () => {
             </div>
           </div>
           <div className="right">
-            <button onClick={handleShare}>Share</button>
+            <button onClick={handleShare} disabled={!description.trim()}>Share</button>
           </div>
         </div>
       </div>
