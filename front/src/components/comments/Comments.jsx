@@ -1,30 +1,23 @@
 import { useContext } from 'react';
 import { AuthContext } from '../../context/authContext';
 import './comments.scss'
+import { makeRequest } from '../../axios';
+import { useQuery } from '@tanstack/react-query';
+import moment from 'moment';
 
-export const Comments = () => {
+export const Comments = ({postId}) => {
   const {currentUser} = useContext(AuthContext);
 
-  const comments = [
-    {
-      id: 1,
-      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, voluptatum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, voluptatum.",
-      name: "John Doe",
-      userId: 1,
-      profilePic: "https://images.pexels.com/photos/4129015/pexels-photo-4129015.jpeg",
-      likes: 32,
-      date: "4 hours ago",
-    },
-    {
-      id: 2,
-      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, voluptatum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, voluptatum.",
-      name: "Jane Doe",
-      userId: 2,
-      profilePic: "https://images.pexels.com/photos/5711923/pexels-photo-5711923.jpeg",
-      likes: 3,
-      date: "1 hour ago",
-    },
-  ];
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['comments', postId], 
+    queryFn: () =>
+      makeRequest.get(`/comments?postId=${postId}`).then((res) => {
+        return res.data;
+      })
+  })
+
+  console.log(data);
+  
 
   return (
     <div className='comments'>
@@ -33,16 +26,27 @@ export const Comments = () => {
         <input type="text" placeholder="Write a comment" />
         <button>Send</button>
       </div>
-      {comments.map((comment) => (<>
-        <div className="comment">
-          <img src={comment.profilePic} alt="Profile Image" />
-          <div className="info">
-            <span>{comment.name}</span>
-            <p>{comment.desc}</p>
-          </div>
-          <span className="date">{comment.date}</span>
-        </div>
-      </>))}
+      
+      {isLoading && <p>Loading comments...</p>}
+      {error && <p>Error loading comments: {error.message}</p>}
+      {!isLoading && !error && (
+        data?.length > 0 ? (
+          data.map((comment) => (
+            <div className="comment" key={comment.id}>
+              <img src={comment.profilePic} alt={comment.name} />
+              <div className="info">
+                <span>{comment.name}</span>
+                <p>{comment.description}</p>
+              </div>
+              <span className="date">
+                {moment(comment.createdAt).fromNow()}
+              </span>
+            </div>
+          ))
+        ) : (
+          <p className="no-comments">No comments yet</p>
+        )
+      )}
     </div>
   )
 }
