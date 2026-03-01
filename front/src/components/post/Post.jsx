@@ -44,7 +44,7 @@ export const Post = ({post}) => {
           </div>
           <div className="item" onClick={() => {setCommentOpen(!commentOpen)}}>
             <SmsOutlinedIcon />
-            {post.comments} Comments
+            {post.commentCount} Comments
           </div>
           <div className="item">
             <ShareOutlinedIcon />

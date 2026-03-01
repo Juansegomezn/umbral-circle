@@ -9,9 +9,12 @@ export const getPosts = (req, res) => {
   jwt.verify(token, "jwtkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
 
-    const q = `SELECT p.*, u.id AS userId, name, profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId)
-    LEFT JOIN relationships AS r ON (r.followedUserId = p.userId) WHERE r.followerUserId = ? OR p.userId = ?
-    ORDER BY p.createdAt DESC`;
+    const q = `SELECT p.*, u.id AS userId, u.name, u.profilePic, COUNT(c.id) AS commentCount FROM posts AS p 
+      JOIN users AS u ON (u.id = p.userId)
+      LEFT JOIN relationships AS r ON (r.followedUserId = p.userId) 
+      LEFT JOIN comments AS c ON (c.postId = p.id) 
+      WHERE r.followerUserId = ? OR p.userId = ?
+      GROUP BY p.id ORDER BY p.createdAt DESC`;
   
     db.query(q, [userInfo.id, userInfo.id], (err, data) => {
       if (err) return res.status(500).json(err);
