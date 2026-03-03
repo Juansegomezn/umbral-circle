@@ -9,13 +9,26 @@ import LanguageIcon from '@mui/icons-material/Language';
 import EmailIcon from '@mui/icons-material/Email';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { Posts } from '../../components/posts/Posts';
+import { useQuery } from '@tanstack/react-query';
+import { makeRequest } from '../../axios';
+import { useLocation } from 'react-router-dom';
 
 export const Profile = () => {
+  const userId = useLocation().pathname.split("/")[2];
+  
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['users', userId], 
+    queryFn: () =>
+      makeRequest.get(`/users/find/${userId}`).then((res) => {
+        return res.data;
+      })
+  })
+  
   return (
     <div className='profile'>
       <div className="images">
-        <img className='cover' src="https://images.pexels.com/photos/1435075/pexels-photo-1435075.jpeg" alt="Background Image" />
-        <img className='profile-pic' src="https://images.pexels.com/photos/5711923/pexels-photo-5711923.jpeg" alt="Profile Image" />
+        <img className='cover' src={data?.coverPic} alt="Background Image" />
+        <img className='profile-pic' src={data?.profilePic} alt="Profile Image" />
       </div>
       <div className="profile-container">
         <div className="us-info">
@@ -37,15 +50,15 @@ export const Profile = () => {
             </a>
           </div>
           <div className="center">
-            <span>Jane Doe</span>
+            <span>{data?.name}</span>
             <div className="info">
               <div className="item">
                 <PlaceIcon />
-                <span>USA</span>
+                <span>{data?.location}</span>
               </div>
               <div className="item">
                 <LanguageIcon />
-                <span>www.janedoe.com</span>
+                <span>{data?.website}</span>
               </div>
             </div>
             <button>Follow</button>
