@@ -11,14 +11,15 @@ import { RouterProvider } from "react-router/dom";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ScrollToTop } from "./utils/ScrollToTop";
 
+const queryClient = new QueryClient();
 
 const Layout = () => {
   const {darkMode} = useContext(DarkModeContext);
-  const queryClient = new QueryClient();
-  
   return (
     <QueryClientProvider client={queryClient}>
+      <ScrollToTop />
       <div className={`theme-${darkMode ? 'dark' : 'light'}`}>
         <Navbar />
         <div style={{display:'flex'}}>
