@@ -17,7 +17,7 @@ export const Post = ({post}) => {
     <div className='post'>
       <div className="container">
         <div className="user">
-          <div className="userInfo">
+          <div className="user-info">
             <img src={post.profilePic} alt="Profile Image" />
             <div className="details">
               <Link to={`/profile/${post.userId}`} style={{textDecoration:'none', color:'inherit'}}>
