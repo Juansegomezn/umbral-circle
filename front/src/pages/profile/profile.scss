@@ -113,6 +113,15 @@
             @include mobile {
               width: 100%;
             }
+            &.btn-update{
+              background-color: transparent;
+              color: themed("textColorSoft");
+              border: 1px solid themed("textColorSoft");
+              &:hover{
+                background-color: themed("textColorSoft");
+                color: themed("bg");
+              }
+            }
           }
         }
         .right{

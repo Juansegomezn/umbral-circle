@@ -11,10 +11,14 @@ import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { Posts } from '../../components/posts/Posts';
 import { useQuery } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/authContext';
 
 export const Profile = () => {
-  const userId = useLocation().pathname.split("/")[2];
+  const { id } = useParams();
+  const userId = Number(id);
+  const {currentUser} = useContext(AuthContext);
   
   const { isLoading, error, data } = useQuery({
     queryKey: ['users', userId], 
@@ -23,7 +27,7 @@ export const Profile = () => {
         return res.data;
       })
   })
-  
+
   return (
     <div className='profile'>
       <div className="images">
@@ -61,7 +65,10 @@ export const Profile = () => {
                 <span>{data?.website}</span>
               </div>
             </div>
-            <button>Follow</button>
+            { currentUser.id === userId 
+              ? <button className='btn-update'>Update</button>
+              : <button>Follow</button>
+            }
           </div>
           <div className="right">
             <EmailIcon />
