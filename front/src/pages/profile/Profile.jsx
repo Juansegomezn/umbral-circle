@@ -68,7 +68,7 @@ export const Profile = () => {
             <MoreVertOutlinedIcon />
           </div>
         </div>
-      <Posts />
+      <Posts userId={userId}/>
       </div>
     </div>
   )
