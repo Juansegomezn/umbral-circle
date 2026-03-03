@@ -8,11 +8,23 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Comments } from '../comments/Comments';
 import moment from 'moment';
+import { makeRequest } from '../../axios';
+import { useQuery } from '@tanstack/react-query';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/authContext';
 
 export const Post = ({post}) => {
   const [commentOpen, setCommentOpen] = useState(false);
-  const liked = false;
+  const {currentUser} = useContext(AuthContext);
 
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['likes', post.id], 
+    queryFn: () =>
+      makeRequest.get(`/likes?postId=${post.id}`).then((res) => {
+        return res.data;
+      })
+  })
+  
   return (
     <div className='post'>
       <div className="container">
@@ -39,8 +51,8 @@ export const Post = ({post}) => {
         </div>
         <div className="info">
           <div className="item">
-            {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
-            {post.likes} Likes
+            {data?.some(like => like.userId === currentUser.id) ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
+            {data?.length || 0} Likes
           </div>
           <div className="item" onClick={() => {setCommentOpen(!commentOpen)}}>
             <SmsOutlinedIcon />

@@ -12,8 +12,6 @@ export const AuthContextProvider = ({children}) => {
     const res = await makeRequest.post("/auth/login", inputs, {
       withCredentials: true
     });
-    console.log(res.data);
-
     setCurrentUser(res.data);
   };
 
