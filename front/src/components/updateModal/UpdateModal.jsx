@@ -72,7 +72,11 @@ export const UpdateModal = ({ setOpenUpdate, user }) => {
               <span>Cover Picture</span>
               <div className="img-container">
                 <img 
-                  src={coverPic ? URL.createObjectURL(coverPic) : "/upload/" + user.coverPic}
+                  src={
+                    coverPic 
+                      ? URL.createObjectURL(coverPic) 
+                      : (user.coverPic?.includes("http") ? user.coverPic : "/upload/" + user.coverPic)
+                  }
                   alt="Cover Preview" 
                 />
               </div>
@@ -83,7 +87,11 @@ export const UpdateModal = ({ setOpenUpdate, user }) => {
               <span>Profile Picture</span>
               <div className="img-container profile">
                 <img 
-                  src={profilePic ? URL.createObjectURL(profilePic) : "/upload/" + user.profilePic}
+                  src={
+                    profilePic 
+                      ? URL.createObjectURL(profilePic) 
+                      : (user.profilePic?.includes("http") ? user.profilePic : "/upload/" + user.profilePic)
+                  }
                   alt="Profile Preview" 
                 />
               </div>
