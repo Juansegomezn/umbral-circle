@@ -122,6 +122,17 @@
                 color: themed("bg");
               }
             }
+            &.btn-unfollow{
+              background-color: #ececec;
+              color: #333;
+              border: 1px solid #ddd;
+              
+              &:hover {
+                background-color: #ffebee;
+                color: #d32f2f;
+                border: 1px solid #d32f2f;
+              }
+            }
           }
         }
         .right{

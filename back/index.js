@@ -4,6 +4,7 @@ import usersRoutes from "./routes/users.js";
 import postsRoutes from "./routes/posts.js";
 import commentsRoutes from "./routes/comments.js";
 import likesRoutes from "./routes/likes.js";
+import relationshipsRoutes from "./routes/relationships.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import multer from "multer";
@@ -42,6 +43,7 @@ app.use("/users", usersRoutes);
 app.use("/posts", postsRoutes);
 app.use("/comments", commentsRoutes);
 app.use("/likes", likesRoutes);
+app.use("/relationships", relationshipsRoutes);
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
