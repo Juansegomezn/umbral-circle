@@ -10,8 +10,8 @@ export const UpdateModal = ({ setOpenUpdate, user }) => {
     username: user.username,
     email: user.email,
     name: user.name,
-    location: user.location,
-    website: user.website
+    location: user.location || '',
+    website: user.website || ''
   })
   const queryClient = useQueryClient(); 
 
@@ -61,21 +61,52 @@ export const UpdateModal = ({ setOpenUpdate, user }) => {
   return (
     <div className="update-modal">
       <div className="wrapper">
-        <h1>Update Your Profile</h1>
-        <button className="btn-close" onClick={() => setOpenUpdate(false)}>
-          X
-        </button>
+        <div className="header">
+          <h1>Update Your Profile</h1>
+          <button className="btn-close" onClick={() => setOpenUpdate(false)}>X</button>
+        </div>
+
         <form onSubmit={handleUpdate}>
-          <input type="text" placeholder={user.username} name='username' onChange={handleChange}/>
-          <input type="text" placeholder={user.email} name='email' onChange={handleChange}/>
-          <label>Cover Picture</label>
-          <input type="file" onChange={(e) => setCoverPic(e.target.files[0])} />
-          <label>Profile Picture</label>
-          <input type="file" onChange={(e) => setProfilePic(e.target.files[0])} />
-          <input type="text" placeholder={user.name} name='name' onChange={handleChange}/>
-          <input type="text" placeholder={user.location} name='location' onChange={handleChange}/>
-          <input type="text" placeholder={user.website} name='website' onChange={handleChange}/>
-          <button type='submit'>Update</button>
+          <div className="files">
+            <label htmlFor="cover">
+              <span>Cover Picture</span>
+              <div className="img-container">
+                <img 
+                  src={coverPic ? URL.createObjectURL(coverPic) : "/upload/" + user.coverPic}
+                  alt="Cover Preview" 
+                />
+              </div>
+            </label>
+            <input type="file" id="cover" style={{display: "none"}} onChange={(e) => setCoverPic(e.target.files[0])} />
+
+            <label htmlFor="profile">
+              <span>Profile Picture</span>
+              <div className="img-container profile">
+                <img 
+                  src={profilePic ? URL.createObjectURL(profilePic) : "/upload/" + user.profilePic}
+                  alt="Profile Preview" 
+                />
+              </div>
+            </label>
+            <input type="file" id="profile" style={{display: "none"}} onChange={(e) => setProfilePic(e.target.files[0])} />
+          </div>
+
+          <div className="text-inputs">
+            <div className="input-item">
+              <label>Name</label>
+              <input type="text" value={inputs.name} name='name' onChange={handleChange} />
+            </div>
+            <div className="input-item">
+              <label>Location</label>
+              <input type="text" value={inputs.location} name='location' onChange={handleChange} />
+            </div>
+            <div className="input-item">
+              <label>Website</label>
+              <input type="text" value={inputs.website} name='website' onChange={handleChange} />
+            </div>
+          </div>
+
+          <button type='submit' className="btn-save">Save Changes</button>
         </form>
       </div>
     </div>
