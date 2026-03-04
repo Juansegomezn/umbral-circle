@@ -64,19 +64,19 @@ export const Profile = () => {
       <div className="profile-container">
         <div className="us-info">
           <div className="left">
-            <a href="https://www.facebook.com">
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
               <FacebookRoundedIcon fontSize="large" />
             </a>
-            <a href="https://www.instagram.com">
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
               <InstagramIcon fontSize="large" />
             </a>
-            <a href="https://www.twitter.com">
+            <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
               <TwitterIcon fontSize="large" />
             </a>
-            <a href="https://www.linkedin.com">
+            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
               <LinkedInIcon fontSize="large" />
             </a>
-            <a href="https://www.pinterest.com">
+            <a href="https://www.pinterest.com" target="_blank" rel="noopener noreferrer">
               <PinterestIcon fontSize="large" />
             </a>
           </div>
