@@ -12,15 +12,17 @@ import { Posts } from '../../components/posts/Posts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
 import { useParams } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/authContext';
+import { UpdateModal } from '../../components/updateModal/UpdateModal';
 
 export const Profile = () => {
   const { id } = useParams();
   const userId = Number(id);
   const {currentUser} = useContext(AuthContext);
   const queryClient = useQueryClient();
-  
+  const [openUpdate, setOpenUpdate] = useState(false);
+
   const { isLoading, error, data: userData } = useQuery({
     queryKey: ['users', userId], 
     queryFn: () =>
@@ -28,7 +30,7 @@ export const Profile = () => {
         return res.data;
       })
   })
-    
+
   const { data: relationshipsData } = useQuery({
     queryKey: ['relationships', userId], 
     queryFn: () =>
@@ -52,12 +54,12 @@ export const Profile = () => {
   const handleFollow = () => {
     mutation.mutate(isFollowing);
   }
-  
+
   return (
     <div className='profile'>
       <div className="images">
-        <img className='cover' src={userData?.coverPic} alt="Background Image" />
-        <img className='profile-pic' src={userData?.profilePic} alt="Profile Image" />
+        <img className='cover' src={userData?.coverPic.includes("http") ? userData?.coverPic : "/upload/" + userData?.coverPic} alt="Background Image" />
+        <img className='profile-pic' src={userData?.profilePic.includes("http") ? userData?.profilePic : "/upload/" + userData?.profilePic} alt="Profile Image" />
       </div>
       <div className="profile-container">
         <div className="us-info">
@@ -91,7 +93,7 @@ export const Profile = () => {
               </div>
             </div>
             { currentUser.id === userId 
-              ? <button className='btn-update'>Update</button>
+              ? <button className='btn-update' onClick={() => setOpenUpdate(true)}>Update</button>
               : 
               <button 
                 className={isFollowing ? 'btn-unfollow' : ''} 
@@ -108,6 +110,7 @@ export const Profile = () => {
         </div>
       <Posts userId={userId}/>
       </div>
+    {openUpdate && <UpdateModal setOpenUpdate={setOpenUpdate} user={userData} />}    
     </div>
   )
 }

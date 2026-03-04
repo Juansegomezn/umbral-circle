@@ -1,0 +1,18 @@
+@import '../../global.scss';
+
+.update-modal{
+  @include themify($themes) {
+    position: fixed;
+    z-index: 99;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 80%;
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.05);
+    
+  }
+}

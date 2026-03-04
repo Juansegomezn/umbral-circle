@@ -36,6 +36,9 @@ const upload = multer({ storage: storage })
 
 app.post("/upload", upload.single('file'), (req, res) => {
     const file = req.file;
+    if (!file) {
+        return res.status(400).json("No file uploaded or file field name is incorrect.");
+    }
     res.status(200).json(file.filename);
 })
 app.use("/auth", authRoutes);
