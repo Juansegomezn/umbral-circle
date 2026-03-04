@@ -31,32 +31,32 @@ export const Stories = () => {
       img: 'https://images.pexels.com/photos/28862962/pexels-photo-28862962.jpeg',
     },
     {
-      id: 3,
+      id: 5,
       name: 'John Doe',
       img: 'https://images.pexels.com/photos/18178432/pexels-photo-18178432.jpeg',
     },
     {
-      id: 4,
+      id: 6,
       name: 'John Doe',
       img: 'https://images.pexels.com/photos/18178432/pexels-photo-18178432.jpeg',
     },
     {
-      id: 3,
+      id: 7,
       name: 'John Doe',
       img: 'https://images.pexels.com/photos/18178432/pexels-photo-18178432.jpeg',
     },
     {
-      id: 4,
+      id: 8,
       name: 'John Doe',
       img: 'https://images.pexels.com/photos/18178432/pexels-photo-18178432.jpeg',
     },
     {
-      id: 3,
+      id: 9,
       name: 'John Doe',
       img: 'https://images.pexels.com/photos/18178432/pexels-photo-18178432.jpeg',
     },
     {
-      id: 4,
+      id: 10,
       name: 'John Doe',
       img: 'https://images.pexels.com/photos/18178432/pexels-photo-18178432.jpeg',
     },
