@@ -212,7 +212,7 @@ relationships:
    DB_PASSWORD=your_password
    DB_NAME=umbral_circle
    JWT_SECRET_KEY=your_super_secret_key_here
-   PORT=8800
+   PORT=3000
    ```
 
 4. **Start the development server:**
@@ -225,7 +225,7 @@ relationships:
    npx nodemon index.js
    ```
 
-The backend will run on `http://localhost:8800` by default.
+The backend will run on `http://localhost:3000` by default.
 
 ### Frontend Setup
 
@@ -292,6 +292,8 @@ Alternatively, copy and execute the script within your preferred SQL client (MyS
 - `POST /api/relationships` - Follow user
 - `DELETE /api/relationships/:userId` - Unfollow user
 
+
+> 💡 **For detailed request/reponse parameters and technical specifications, please refer to the [API.md](./API.md) file.**
 ---
 
 ## 🔐 Security Features
@@ -330,7 +332,7 @@ npm run dev
 
 ### 4. Access the Application
 - Frontend: `http://localhost:5173`
-- Backend API: `http://localhost:8800`
+- Backend API: `http://localhost:3000`
 
 ---
 
@@ -359,12 +361,12 @@ DB_USER=root
 DB_PASSWORD=yourpassword
 DB_NAME=umbral_circle
 JWT_SECRET_KEY=your_super_secret_jwt_key_here
-PORT=8800
+PORT=3000
 ```
 
 ### Frontend Configuration
 - Axios configured in `src/axios.js` to connect with backend
-- API base URL: `http://localhost:8800/api`
+- API base URL: `http://localhost:3000/`
 - Automatic token inclusion using axios interceptors
 
 ---
@@ -427,7 +429,7 @@ You can test endpoints using:
 
 Example:
 ```bash
-curl -X POST http://localhost:8800/api/auth/login \
+curl -X POST http://localhost:3000/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"user@example.com","password":"password123"}'
 ```
@@ -458,8 +460,8 @@ curl -X POST http://localhost:8800/api/auth/login \
 netstat -ano | findstr :5173
 taskkill /PID <PID> /F
 
-# Kill process on port 8800 (backend)
-netstat -ano | findstr :8800
+# Kill process on port 3000 (backend)
+netstat -ano | findstr :3000
 taskkill /PID <PID> /F
 ```
 
