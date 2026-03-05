@@ -6,6 +6,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 export const UpdateModal = ({ setOpenUpdate, user }) => {
   const [coverPic, setCoverPic] = useState(null);
   const [profilePic, setProfilePic] = useState(null);
+  const [coverUrl, setCoverUrl] = useState("");
+  const [profileUrl, setProfileUrl] = useState("");
   const [inputs, setInputs] = useState({
     username: user.username,
     email: user.email,
@@ -49,10 +51,19 @@ export const UpdateModal = ({ setOpenUpdate, user }) => {
     let coverPicUrl = user.coverPic;
     let profilePicUrl = user.profilePic;
 
-    if (coverPic) coverPicUrl = await upload(coverPic);
-    if (profilePic) profilePicUrl = await upload(profilePic);
+    if (coverPic) {
+      coverPicUrl = await upload(coverPic);
+    } else if (coverUrl.trim()) {
+      coverPicUrl = coverUrl;
+    }
+    if (profilePic) {
+      profilePicUrl = await upload(profilePic);
+    } else if (profileUrl.trim()) {
+      profilePicUrl = profileUrl;
+    }
     
     mutation.mutate({...inputs, coverPic: coverPicUrl, profilePic: profilePicUrl})
+
     setOpenUpdate(false)
     setCoverPic(null)
     setProfilePic(null)
@@ -68,35 +79,53 @@ export const UpdateModal = ({ setOpenUpdate, user }) => {
 
         <form onSubmit={handleUpdate}>
           <div className="files">
-            <label htmlFor="cover">
-              <span>Cover Picture</span>
-              <div className="img-container">
-                <img 
-                  src={
-                    coverPic 
-                      ? URL.createObjectURL(coverPic) 
-                      : (user.coverPic?.includes("http") ? user.coverPic : "/upload/" + user.coverPic)
-                  }
-                  alt="Cover Preview" 
-                />
-              </div>
-            </label>
-            <input type="file" id="cover" style={{display: "none"}} onChange={(e) => setCoverPic(e.target.files[0])} />
+            <div className="file-item">
+              <label htmlFor="cover">
+                <span>Cover Picture</span>
+                <div className="img-container">
+                  <img 
+                    src={
+                      coverPic 
+                        ? URL.createObjectURL(coverPic) 
+                        : (coverUrl ? coverUrl : (user.coverPic?.includes("http") ? user.coverPic : "/upload/" + user.coverPic))
+                    }
+                    alt="Cover Preview" 
+                  />
+                </div>
+              </label>
+              <input type="file" id="cover" style={{display: "none"}} onChange={(e) => {setCoverPic(e.target.files[0]); setCoverUrl("")}} />
+              <input 
+                type="text" 
+                className="url-input" 
+                placeholder="Or paste cover URL..." 
+                value={coverUrl} 
+                onChange={(e) => {setCoverUrl(e.target.value); setCoverPic(null)}}
+              />
+            </div>
 
-            <label htmlFor="profile">
-              <span>Profile Picture</span>
-              <div className="img-container profile">
-                <img 
-                  src={
-                    profilePic 
-                      ? URL.createObjectURL(profilePic) 
-                      : (user.profilePic?.includes("http") ? user.profilePic : "/upload/" + user.profilePic)
-                  }
-                  alt="Profile Preview" 
-                />
-              </div>
-            </label>
-            <input type="file" id="profile" style={{display: "none"}} onChange={(e) => setProfilePic(e.target.files[0])} />
+            <div className="file-item">
+              <label htmlFor="profile">
+                <span>Profile Picture</span>
+                <div className="img-container profile">
+                  <img 
+                    src={
+                      profilePic 
+                        ? URL.createObjectURL(profilePic) 
+                        : (profileUrl ? profileUrl : (user.profilePic?.includes("http") ? user.profilePic : "/upload/" + user.profilePic))
+                    }
+                    alt="Profile Preview" 
+                  />
+                </div>
+              </label>
+              <input type="file" id="profile" style={{display: "none"}} onChange={(e) => {setProfilePic(e.target.files[0]); setProfileUrl("")}} />
+              <input 
+                type="text" 
+                className="url-input" 
+                placeholder="Or paste profile URL..." 
+                value={profileUrl} 
+                onChange={(e) => {setProfileUrl(e.target.value); setProfilePic(null)}}
+              />
+            </div>
           </div>
 
           <div className="text-inputs">
