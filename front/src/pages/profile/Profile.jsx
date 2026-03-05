@@ -58,8 +58,8 @@ export const Profile = () => {
   return (
     <div className='profile'>
       <div className="images">
-        <img className='cover' src={userData?.coverPic.includes("http") ? userData?.coverPic : "/upload/" + userData?.coverPic} alt="Background Image" />
-        <img className='profile-pic' src={userData?.profilePic.includes("http") ? userData?.profilePic : "/upload/" + userData?.profilePic} alt="Profile Image" />
+        <img className='cover' src={userData?.coverPic?.includes("http") ? userData?.coverPic : "/upload/" + userData?.coverPic} alt="Background Image" />
+        <img className='profile-pic' src={userData?.profilePic?.includes("http") ? userData?.profilePic : "/upload/" + userData?.profilePic} alt="Profile Image" />
       </div>
       <div className="profile-container">
         <div className="us-info">
