@@ -253,7 +253,12 @@ The frontend will typically run on `http://localhost:5173` (Vite's default).
    CREATE DATABASE umbral_circle;
    ```
 
-2. **Import the schema** using your database client (SQL files should be provided in the project, or tables will be created automatically if using an ORM/migration tool).
+2. **Import the schema** 
+Locate the back/database.sql file. You can import it via terminal:
+
+'mysql -u your_user -p umbral_circle < back/database.sql'
+
+Alternatively, copy and execute the script within your preferred SQL client (MySQL Workbench, TablePlus, etc.).
 
 ---
 
