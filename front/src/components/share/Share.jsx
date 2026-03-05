@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/authContext';
 import './share.scss'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ImageIcon from '@mui/icons-material/Image';
+import LinkIcon from '@mui/icons-material/Link';
 import MapIcon from '@mui/icons-material/Map';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
@@ -11,8 +12,10 @@ import CancelIcon from '@mui/icons-material/Cancel';
 export const Share = () => {
   const {currentUser} = useContext(AuthContext)
   const [file, setFile] = useState(null)
+  const [link, setLink] = useState("");
   const [preview, setPreview] = useState(null);
   const [description, setDescription] = useState("")
+  const [showLinkInput, setShowLinkInput] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -54,14 +57,21 @@ export const Share = () => {
       alert("Please enter a description before sharing.");
       return;
     }
-    
-    let imgUrl = '';
-    if (file) { imgUrl = await upload(); }
-    
-    mutation.mutate({description, img: imgUrl})
-    
+
+    let finalImgUrl = '';
+    if (file) { 
+      finalImgUrl = await upload(); 
+    } 
+    else if (link.trim()) {
+      finalImgUrl = link;
+    }
+
+    mutation.mutate({ description, img: finalImgUrl });
+
     setDescription("");
     setFile(null);
+    setLink("");
+    setShowLinkInput(false);
   }
 
   return (
@@ -86,20 +96,43 @@ export const Share = () => {
             <CancelIcon className="cancel-img" onClick={() => setFile(null)} />
           </div>
         )}
+        {link && !file && (
+          <div className="img-container">
+            <img className="file-preview" alt="External preview" src={link} />
+            <CancelIcon className="cancel-img" onClick={() => setLink("")} />
+          </div>
+        )}
+        {showLinkInput && !file && (
+          <div className="link-input-container">
+            <input 
+              type="text" 
+              placeholder="Paste image URL here..." 
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+            />
+          </div>
+        )}
         <div className="bottom">
           <div className="left">
             <input 
               type="file" 
               id="file" 
               style={{display:"none"}} 
-              onChange={(e) => setFile(e.target.files[0])}
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+                setLink("");
+              }}
             />
             <label htmlFor="file">
               <div className="item">
                 <ImageIcon />
-                <span>Add Image</span>
+                <span>Upload Image</span>
               </div>
             </label>
+            <div className="item" onClick={() => setShowLinkInput(!showLinkInput)}>
+              <LinkIcon />
+              <span>Paste Link</span>
+            </div>
             <div className="item">
               <PeopleAltIcon />
               <span>Tag Friends</span>

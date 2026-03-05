@@ -44,6 +44,26 @@
         height: 0.5px;
         background-color: themed("border");
       }
+      .link-input-container {
+        padding: 10px 0;
+        animation: fadeIn 0.3s ease;
+        input {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid themed("border");
+          background-color: transparent;
+          color: themed("textColor");
+          border-radius: 5px;
+          outline: none;
+          font-size: 14px;
+          &::placeholder {
+            color: themed("textColorSoft");
+          }
+          &:focus {
+            border-color: #5271ff;
+          }
+        }
+      }
       .img-container {
         position: relative;
         width: 100%;
@@ -129,4 +149,9 @@
       }
     }
   }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
