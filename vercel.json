@@ -1,19 +1,14 @@
 {
   "version": 2,
+  "public": true,
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/back/index.js"
-    }
-  ],
-  "builds": [
-    {
-      "src": "back/index.js",
-      "use": "@vercel/node"
     },
     {
-      "src": "front/package.json",
-      "use": "@vercel/static-build"
+      "source": "/(.*)",
+      "destination": "/front/dist/$1"
     }
   ]
 }
