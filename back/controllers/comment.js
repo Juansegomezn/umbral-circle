@@ -16,7 +16,7 @@ export const addComment = (req, res) => {
   const token = req.cookies.accessToken;
   if (!token) return res.status(401).json("Not authenticated!");
 
-  jwt.verify(token, "jwtkey", (err, userInfo) => {
+  jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
 
     const q = `INSERT INTO comments (description, createdAt, userId, postId) VALUES (?, ?, ?, ?)`;

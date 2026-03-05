@@ -8,6 +8,9 @@ import relationshipsRoutes from "./routes/relationships.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import multer from "multer";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
