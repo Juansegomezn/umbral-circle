@@ -22,6 +22,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true
 }));
 app.use(cookieParser());
 
@@ -40,10 +41,11 @@ const upload = multer({ storage: storage })
 app.post("/upload", upload.single('file'), (req, res) => {
     const file = req.file;
     if (!file) {
-        return res.status(400).json("No file uploaded or file field name is incorrect.");
+        return res.status(400).json("No file uploaded.");
     }
     res.status(200).json(file.filename);
 })
+
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/posts", postsRoutes);
@@ -51,7 +53,10 @@ app.use("/comments", commentsRoutes);
 app.use("/likes", likesRoutes);
 app.use("/relationships", relationshipsRoutes);
 
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(3000, () => {
+        console.log("Server is running on port 3000");
+    });
+}
 
+export default app;
