@@ -4,6 +4,7 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Comments } from '../comments/Comments';
@@ -15,6 +16,7 @@ import { AuthContext } from '../../context/authContext';
 
 export const Post = ({post}) => {
   const [commentOpen, setCommentOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const {currentUser} = useContext(AuthContext);
   const queryClient = useQueryClient();
 
@@ -26,7 +28,7 @@ export const Post = ({post}) => {
       })
   })
 
-  const mutation = useMutation({
+  const likeMutation = useMutation({
     mutationFn: (liked) => {
       if (liked) return makeRequest.delete("/likes", { params: { postId: post.id } });
       return makeRequest.post('/likes', { postId: post.id });
@@ -36,8 +38,21 @@ export const Post = ({post}) => {
     }
   })
 
+  const deleteMutation = useMutation({
+    mutationFn: (postId) => {
+      return makeRequest.delete(`/posts/${postId}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['posts']);
+    }
+  })
+
   const handleLike = () => {
-    mutation.mutate(data?.some(like => like.userId === currentUser.id));
+    likeMutation.mutate(data?.some(like => like.userId === currentUser.id));
+  }
+
+  const handleDelete = () => {
+    deleteMutation.mutate(post.id);
   }
   
   return (
@@ -53,7 +68,20 @@ export const Post = ({post}) => {
               <span className='date'>{moment(post.createdAt).fromNow()}</span>
             </div>
           </div>
-          <MoreHorizIcon />
+          {post.userId === currentUser.id && (
+            <div className="more">
+              <MoreHorizIcon className='more-icon' onClick={() => setMenuOpen(!menuOpen)} />
+              {menuOpen && (
+                <>
+                  <div className="menu-overlay" onClick={() => setMenuOpen(false)} />
+                  <div className="delete-container" onClick={handleDelete}>
+                    <DeleteOutlineIcon className="delete-icon" />
+                    <span>Delete</span>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
         <div className="content">
           <p>{post.description}</p>
