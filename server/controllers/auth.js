@@ -36,6 +36,8 @@ export const login = (req, res) => {
         res
             .cookie('accessToken', token, {
                 httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             })
             .status(200)
             .json(others);
