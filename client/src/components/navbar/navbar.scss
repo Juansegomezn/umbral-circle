@@ -26,6 +26,9 @@
       svg {
         cursor: pointer;
         color: themed('textColor');
+        @include mobile {
+          display: none;
+        }
       }
     }
     .search {
@@ -39,6 +42,7 @@
       @include mobile {
         border: none;
         background-color: transparent;
+        justify-content: right;
       }
       @include tablet {
         width: 200px;
@@ -100,6 +104,7 @@
       .logout-icon {
         cursor: pointer;
         color: themed('textColor');
+        display: block;
         &:hover {
           color: #F43F5E;
         }

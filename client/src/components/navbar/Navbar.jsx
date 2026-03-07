@@ -44,7 +44,7 @@ export const Navbar = () => {
         <PersonOutlineOutlinedIcon />
         <EmailOutlinedIcon />
         <NotificationsNoneOutlinedIcon />
-        <div className="user">
+        <div className="user" onClick={() => navigate(`/profile/${currentUser.id}`)}>
           <img src={currentUser.profilePic} alt="Profile Image" />
           <span>{currentUser.name}</span>
         </div>
