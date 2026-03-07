@@ -58,5 +58,8 @@ if (process.env.NODE_ENV !== 'production') {
         console.log("Server is running on port 3000");
     });
 }
+app.get("/", (req, res) => {
+    res.send("Umbral Circle server is running 🚀");
+});
 
 export default app;
