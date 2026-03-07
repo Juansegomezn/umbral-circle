@@ -21,23 +21,9 @@ app.use((req, res, next) => {
 })
 app.use(express.json());
 app.use(cookieParser());
-
-const allowedOrigins = [
-    "https://umbral-circle.vercel.app",
-    "https://umbral-circle-b8hv3dcg6-juansegartors-projects.vercel.app",
-    "http://localhost:5173"
-];
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-        return callback(new Error("CORS policy violation"), false);
-        }
-        return callback(null, true);
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+    origin: "https://umbral-circle.vercel.app",
+    credentials: true
 }));
 
 const storage = multer.diskStorage({
