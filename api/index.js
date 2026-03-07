@@ -28,7 +28,7 @@ app.use(cookieParser());
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '../front/public/upload')
+        cb(null, '../client/public/upload')
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)

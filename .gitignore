@@ -24,8 +24,7 @@ dist-ssr
 *.sw?
 
 # Uploads
-front/public/upload/
+client/public/upload/
 
 # Env files
 .env
-/back/.env
