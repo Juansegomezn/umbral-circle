@@ -97,6 +97,13 @@
           }
         }
       }
+      .logout-icon {
+        cursor: pointer;
+        color: themed('textColor');
+        &:hover {
+          color: #F43F5E;
+        }
+      }
     }
   }
 }

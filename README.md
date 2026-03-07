@@ -15,9 +15,10 @@ Umbral Circle is a full-featured social network that demonstrates professional f
 ## ✨ Features
 
 ### Authentication & Security
+- **Authentication:** Secure Login/Register using JWT and Cookies.
 - 🔐 **Secure Registration & Login** - User authentication with JWT tokens stored in httpOnly cookies
 - 🔒 **Password Hashing** - Bcryptjs for secure password management
-- 🚪 **Logout** - Safe session termination and token cleanup
+- 🚪 **Logout:** Server-side cookie clearance and local state reset.
 
 ### Social Features
 - 📝 **Create Posts** - Share text and images with your network
