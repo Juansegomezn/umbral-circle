@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: "https://umbral-circle.vercel.app",
+    origin: "https://umbral-circle-client.vercel.app",
     credentials: true
 }));
 
