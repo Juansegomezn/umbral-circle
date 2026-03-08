@@ -93,10 +93,10 @@ export const Post = ({post}) => {
           )}
         </div>
         <div className="info">
-          <div className="item">
+          <div className="item" onClick={handleLike}>
             {data?.some(like => like.userId === currentUser.id) 
-              ? <FavoriteOutlinedIcon onClick={handleLike} style={{color:'#F43F5E'}}/> 
-              : <FavoriteBorderOutlinedIcon onClick={handleLike}/>
+              ? <FavoriteOutlinedIcon style={{color:'#F43F5E'}}/> 
+              : <FavoriteBorderOutlinedIcon />
             }
             {data?.length || 0} Likes
           </div>
