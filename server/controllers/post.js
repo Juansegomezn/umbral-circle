@@ -11,14 +11,21 @@ export const getPosts = (req, res) => {
 
     const userId = req.query.userId;
     const q = userId !== undefined 
-      ? `SELECT p.*, u.id AS userId, name, profilePic FROM posts AS p 
-          JOIN users AS u ON (u.id = p.userId) 
-          WHERE p.userId = ? ORDER BY p.createdAt DESC`
-      : `SELECT DISTINCT p.*, u.id AS userId, name, profilePic FROM posts AS p 
-          JOIN users AS u ON (u.id = p.userId)
-          LEFT JOIN relationships AS r ON (r.followedUserId = p.userId) 
-          WHERE r.followerUserId = ? OR p.userId = ?
-          ORDER BY p.createdAt DESC`;
+      ? `SELECT p.*, u.id AS userId, name, profilePic, COUNT(c.id) AS commentCount 
+        FROM posts AS p 
+        JOIN users AS u ON (u.id = p.userId) 
+        LEFT JOIN comments AS c ON (c.postId = p.id)
+        WHERE p.userId = ? 
+        GROUP BY p.id
+        ORDER BY p.createdAt DESC`
+      : `SELECT DISTINCT p.*, u.id AS userId, name, profilePic, COUNT(c.id) AS commentCount 
+        FROM posts AS p 
+        JOIN users AS u ON (u.id = p.userId)
+        LEFT JOIN relationships AS r ON (r.followedUserId = p.userId) 
+        LEFT JOIN comments AS c ON (c.postId = p.id)
+        WHERE r.followerUserId = ? OR p.userId = ?
+        GROUP BY p.id
+        ORDER BY p.createdAt DESC`;
 
     const values = userId !== undefined ? [userId] : [userInfo.id, userInfo.id];
 
