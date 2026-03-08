@@ -33,9 +33,29 @@ export const Post = ({post}) => {
       if (liked) return makeRequest.delete("/likes", { params: { postId: post.id } });
       return makeRequest.post('/likes', { postId: post.id });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['likes', post.id]);
-    }
+    // Step 1: Update state optimistically before the server responds
+    onMutate: async (liked) => {
+      await queryClient.cancelQueries({ queryKey: ['likes', post.id] });
+
+      const previousLikes = queryClient.getQueryData(['likes', post.id]);
+
+      queryClient.setQueryData(['likes', post.id], (old) => {
+        if (liked) {
+          return old.filter((like) => like.userId !== currentUser.id);
+        }
+        return [...(old || []), { userId: currentUser.id, postId: post.id }];
+      });
+
+      return { previousLikes };
+    },
+    // Step 2: If the server returns an error
+    onError: (err, liked, context) => {
+      queryClient.setQueryData(['likes', post.id], context.previousLikes);
+    },
+    // Step 3: Regardless of the outcome, synchronize with the reality
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['likes', post.id] });
+    },
   })
 
   const deleteMutation = useMutation({
@@ -48,7 +68,8 @@ export const Post = ({post}) => {
   })
 
   const handleLike = () => {
-    likeMutation.mutate(data?.some(like => like.userId === currentUser.id));
+    const isLiked = data?.some(like => like.userId === currentUser.id);
+    likeMutation.mutate(isLiked);
   }
 
   const handleDelete = () => {
