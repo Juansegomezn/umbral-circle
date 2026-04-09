@@ -56,3 +56,13 @@ export const logout = (req, res) => {
         path: '/'
     }).status(200).json('User has been logged out.');
 };
+
+export const checkUser = (req, res) => {
+    const token = req.cookies.accessToken;
+    if (!token) return res.status(401).json("Not logged in!");
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
+        if (err) return res.status(403).json("Token is not valid!");
+        return res.status(200).json("Authenticated");
+    });
+};
