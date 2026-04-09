@@ -36,14 +36,13 @@ export const Post = ({post}) => {
     // Step 1: Update state optimistically before the server responds
     onMutate: async (liked) => {
       await queryClient.cancelQueries({ queryKey: ['likes', post.id] });
-
       const previousLikes = queryClient.getQueryData(['likes', post.id]);
 
       queryClient.setQueryData(['likes', post.id], (old) => {
         if (liked) {
           return old.filter((like) => like.userId !== currentUser.id);
         }
-        return [...(old || []), { userId: currentUser.id, postId: post.id }];
+        return [...(old || []), { userId: currentUser.id }];
       });
 
       return { previousLikes };
