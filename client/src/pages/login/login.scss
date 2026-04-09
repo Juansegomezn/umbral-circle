@@ -95,6 +95,29 @@
           }
         }
       }
+      .mobile-register {
+        display: none;
+        @include mobile {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 15px;
+          margin-top: 10px;
+          span {
+            font-size: 14px;
+            color: gray;
+          }
+          button {
+            padding: 10px 20px;
+            border: 1px solid #F43F5E;
+            background-color: transparent;
+            color: #F43F5E;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+          }
+        }
+      }
     }
   }
 }

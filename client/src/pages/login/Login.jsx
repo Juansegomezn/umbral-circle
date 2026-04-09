@@ -52,6 +52,13 @@ export const Login = () => {
               <button type="submit">Login</button>
             </div>
           </form>
+
+          <div className="mobile-register">
+            <span>Don't you have an account yet?</span>
+            <Link to="/register">
+              <button>Register</button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
