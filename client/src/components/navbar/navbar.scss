@@ -63,6 +63,9 @@
               display: block;
               width: 100%;
             }
+            .close-icon {
+              color: themed('textColor');
+            }
           }
         }
         input {

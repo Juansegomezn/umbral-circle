@@ -8,6 +8,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import { Link, useNavigate } from 'react-router-dom';
 import { DarkModeContext } from '../../context/darkModeContext';
 import { useContext, useState, useEffect } from 'react';
@@ -61,7 +62,10 @@ export const Navbar = () => {
 
       <div className="search-container">
         <div className={`search ${showMobileSearch ? "mobile-open" : ""}`}>
-          <SearchOutlinedIcon onClick={() => setShowMobileSearch(!showMobileSearch)} />
+          {showMobileSearch 
+            ? ( <CloseIcon onClick={() => setShowMobileSearch(false)} className="close-icon" /> ) 
+            : ( <SearchOutlinedIcon onClick={() => setShowMobileSearch(true)} /> )
+          }
           <input 
             type="text"
             placeholder='Search people...' 
