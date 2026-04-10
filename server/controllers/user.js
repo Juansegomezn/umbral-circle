@@ -47,3 +47,17 @@ export const updateUser = (req, res) => {
     });
   });
 }
+
+// En controllers/user.js
+export const searchUsers = (req, res) => {
+  const query = req.query.name;
+  const q = `SELECT id, name, username, "profilePic" 
+    FROM users 
+    WHERE name ILIKE $1 OR username ILIKE $1 
+    LIMIT 5`;
+
+  db.query(q, [`%${query}%`], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json(data.rows);
+  });
+};

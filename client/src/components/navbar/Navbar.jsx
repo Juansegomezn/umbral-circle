@@ -10,13 +10,34 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { Link, useNavigate } from 'react-router-dom';
 import { DarkModeContext } from '../../context/darkModeContext';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/authContext';
+import { makeRequest } from '../../axios';
 
 export const Navbar = () => {
   const {toggle, darkMode} = useContext(DarkModeContext);
   const {currentUser, logout} = useContext(AuthContext);
+  const [searchText, setSearchText] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      if (searchText.length < 2) {
+        setSearchResults([]);
+        return;
+      }
+      try {
+        const res = await makeRequest.get(`/users/search?name=${searchText}`);
+        setSearchResults(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    const timeoutId = setTimeout(fetchUsers, 300);
+    return () => clearTimeout(timeoutId);
+  }, [searchText]);
 
   const handleLogout = async () => {
     await logout();
@@ -36,10 +57,37 @@ export const Navbar = () => {
         }
         <AppsOutlinedIcon />
       </div>
-      <div className="search">
-        <SearchOutlinedIcon />
-        <input type="text" placeholder='Search...' />
+
+      <div className="search-container">
+        <div className="search">
+          <SearchOutlinedIcon />
+          <input 
+            type="text" 
+            placeholder='Search people...' 
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+        </div>
+        
+        {searchResults.length > 0 && (
+          <div className="search-results">
+            {searchResults.map((user) => (
+              <div 
+                key={user.id} 
+                className="result-item" 
+                onClick={() => {
+                  navigate(`/profile/${user.id}`);
+                  setSearchText("");
+                }}
+              >
+                <img src={user.profilePic} alt="" />
+                <span>{user.name}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+
       <div className="right">
         <PersonOutlineOutlinedIcon />
         <EmailOutlinedIcon />

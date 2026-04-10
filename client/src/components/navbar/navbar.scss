@@ -31,41 +31,79 @@
         }
       }
     }
-    .search {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background-color: themed('bgSoft');
-      border: 1px solid themed('border');
-      padding: 5px 10px;
-      border-radius: 5px;
+    .search-container {
+      position: relative;
       @include mobile {
-        border: none;
-        background-color: transparent;
-        justify-content: right;
+        display: none;
       }
-      @include tablet {
-        width: 200px;
-      }
-      input {
-        width: 480px;
-        border: none;
-        outline: none;
-        padding: 5px;
-        background-color: transparent;
-        color: themed('textColor');
+      .search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background-color: themed('bgSoft');
+        border: 1px solid themed('border');
+        padding: 5px 10px;
+        border-radius: 5px;
+        @include mobile {
+          border: none;
+          background-color: transparent;
+          justify-content: right;
+        }
         @include tablet {
           width: 200px;
         }
-        @include mobile {
-          display: none;
+        input {
+          width: 480px;
+          border: none;
+          outline: none;
+          padding: 5px;
+          background-color: transparent;
+          color: themed('textColor');
+          @include tablet {
+            width: 200px;
+          }
+          @include mobile {
+            display: none;
+          }
+          &::placeholder {
+            color: themed('textColorSoft');
+          }
         }
-        &::placeholder {
+        svg {
           color: themed('textColorSoft');
         }
       }
-      svg {
-        color: themed('textColorSoft');
+      .search-results {
+        position: absolute;
+        top: 45px;
+        left: 0;
+        width: 100%;
+        background-color: themed('bg');
+        border: 1px solid themed('border');
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+        .result-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px;
+          cursor: pointer;
+          &:hover {
+            background-color: themed('bgSoft');
+          }
+          img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+          span {
+            font-size: 14px;
+            font-weight: 500;
+          }
+        }
       }
     }
     .right {
