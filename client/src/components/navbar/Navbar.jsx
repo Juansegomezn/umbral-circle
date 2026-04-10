@@ -19,6 +19,7 @@ export const Navbar = () => {
   const {currentUser, logout} = useContext(AuthContext);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,11 +60,12 @@ export const Navbar = () => {
       </div>
 
       <div className="search-container">
-        <div className="search">
-          <SearchOutlinedIcon />
+        <div className={`search ${showMobileSearch ? "mobile-open" : ""}`}>
+          <SearchOutlinedIcon onClick={() => setShowMobileSearch(!showMobileSearch)} />
           <input 
-            type="text" 
+            type="text"
             placeholder='Search people...' 
+            className={showMobileSearch ? "show" : ""}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
@@ -76,6 +78,7 @@ export const Navbar = () => {
                 key={user.id} 
                 className="result-item" 
                 onClick={() => {
+                  setShowMobileSearch(false);
                   navigate(`/profile/${user.id}`);
                   setSearchText("");
                 }}
