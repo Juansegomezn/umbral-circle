@@ -50,10 +50,8 @@ export const Navbar = () => {
 
   const toggleMobileSearch = () => {
     setShowMobileSearch(!showMobileSearch);
-    if (!showMobileSearch) {
-      setSearchText("");
-      setOpenMenu(false);
-    }
+    setSearchText("");
+    if (!showMobileSearch) setOpenMenu(false);
   };
 
   const toggleMobileMenu = () => {
@@ -81,7 +79,7 @@ export const Navbar = () => {
       <div className="search-container">
         <div className={`search ${showMobileSearch ? "mobile-open" : ""}`}>
           {showMobileSearch 
-            ? ( <CloseIcon onClick={() => setShowMobileSearch(false)} className="close-icon" /> ) 
+            ? ( <CloseIcon onClick={toggleMobileSearch} className="close-icon" /> ) 
             : ( <SearchOutlinedIcon onClick={toggleMobileSearch} /> )
           }
           <input 
