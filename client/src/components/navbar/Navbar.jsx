@@ -9,6 +9,7 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import CloseIcon from '@mui/icons-material/Close';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import { Link, useNavigate } from 'react-router-dom';
 import { DarkModeContext } from '../../context/darkModeContext';
 import { useContext, useState, useEffect } from 'react';
@@ -21,6 +22,7 @@ export const Navbar = () => {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,6 +48,22 @@ export const Navbar = () => {
     navigate("/login");
   };
 
+  const toggleMobileSearch = () => {
+    setShowMobileSearch(!showMobileSearch);
+    if (!showMobileSearch) {
+      setSearchText("");
+      setOpenMenu(false);
+    }
+  };
+
+  const toggleMobileMenu = () => {
+    setOpenMenu(!openMenu);
+    if (!openMenu) {
+      setSearchText("");
+      setShowMobileSearch(false);
+    }
+  };
+
   return (
     <div className='navbar'>
       <div className="left">
@@ -64,7 +82,7 @@ export const Navbar = () => {
         <div className={`search ${showMobileSearch ? "mobile-open" : ""}`}>
           {showMobileSearch 
             ? ( <CloseIcon onClick={() => setShowMobileSearch(false)} className="close-icon" /> ) 
-            : ( <SearchOutlinedIcon onClick={() => setShowMobileSearch(true)} /> )
+            : ( <SearchOutlinedIcon onClick={toggleMobileSearch} /> )
           }
           <input 
             type="text"
@@ -96,6 +114,30 @@ export const Navbar = () => {
       </div>
 
       <div className="right">
+        <div className="mobile-menu-icon" onClick={toggleMobileMenu}>
+          <MenuOutlinedIcon />
+        </div>
+        {openMenu && (
+          <div className="navbar-dropdown">
+            <div className="user" onClick={() => {navigate(`/profile/${currentUser.id}`); setOpenMenu(false)}}>
+              <img src={currentUser.profilePic} alt="" />
+              <span>{currentUser.name}</span>
+            </div>
+            <hr />
+            <div className="item" onClick={toggle}>
+              { darkMode 
+                ? <WbSunnyOutlinedIcon onClick={toggle}/>        
+                : <BedtimeOutlinedIcon onClick={toggle}/>
+              }
+              <span>{darkMode ? "Light Mode" : "Dark Mode"}</span>
+            </div>
+            <div className="item" onClick={handleLogout}>
+              <LogoutOutlinedIcon />
+              <span>Logout</span>
+            </div>
+          </div>
+        )}
+
         <PersonOutlineOutlinedIcon />
         <EmailOutlinedIcon />
         <NotificationsNoneOutlinedIcon />
