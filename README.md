@@ -40,6 +40,11 @@ Umbral Circle is a full-featured social network that demonstrates professional f
 - 🖼️ **Image Preview** - Preview images before posting
 - 📂 **Dropdown Menus** - Intuitive menus for post management
 
+### 🔍 Advanced Search & Navigation
+- **Real-time User Search:** Integrated search bar in the Navbar using PostgreSQL `ILIKE` for high-performance user discovery.
+- **Mobile-First Navigation:** Custom hamburger menu dropdown for account management and a dedicated mobile search overlay with toggleable "Lupa/X" icons.
+- **Improved UX:** Interactive sidebar and profile sections for intuitive navigation.
+
 ---
 
 ## 🛠️ Tech Stack
@@ -62,9 +67,10 @@ Umbral Circle is a full-featured social network that demonstrates professional f
 - **File Upload:** Multer for image uploads to local storage
 - **API Pattern:** RESTful architecture
 
-### Database
-- **System:** MySQL
-- **Design:** Relational schema with proper foreign keys and indexing
+### Database & Cloud
+- **System:** PostgreSQL (migrated from MySQL)
+- **Hosting:** Supabase (High-performance relational database)
+- **Infrastructure:** Previously MySQL/Railway, now optimized for Postgres.
 
 ---
 
@@ -208,12 +214,12 @@ relationships:
 
 3. **Create a `.env` file in the root of the `back` directory:**
    ```env
-   DB_HOST=localhost
-   DB_USER=root
-   DB_PASSWORD=your_password
-   DB_NAME=umbral_circle
-   JWT_SECRET_KEY=your_super_secret_key_here
-   PORT=3000
+   DB_HOST=your_supabase_db_host
+   DB_USER=postgres
+   DB_PASSWORD=your_supabase_password
+   DB_NAME=postgres
+   DB_PORT=5432
+   JWT_SECRET_KEY=your_secret_key
    ```
 
 4. **Start the development server:**
@@ -273,7 +279,7 @@ Alternatively, copy and execute the script within your preferred SQL client (MyS
 ### Users
 - `GET /api/users/:id` - Get user profile
 - `PUT /api/users/:id` - Update user information
-- `GET /api/users/friends/:userId` - Get user's followers
+- `GET /api/users/search?name=...` - Real-time user discovery.
 
 ### Posts
 - `GET /api/posts` - Get all posts / feed
@@ -360,7 +366,7 @@ npm run dev
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=yourpassword
-DB_NAME=umbral_circle
+DB_NAME=umbral
 JWT_SECRET_KEY=your_super_secret_jwt_key_here
 PORT=3000
 ```
@@ -502,6 +508,6 @@ For issues, questions, or suggestions, please open an issue on GitHub.
 
 <div align="center">
 
-**Made by Juan Sebastian Gomez Ayala**
+**Developed by Juan Sebastian Gomez Ayala**
 
 </div>
