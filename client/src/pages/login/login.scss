@@ -90,11 +90,26 @@
             background-color: #F43F5E;
             color: #FFFFFF;
             font-weight: bold;
+            transition: all 0.3s ease;
             cursor: pointer;
+            &:disabled {
+              background-color: #f3f4f6;
+              color: #9ca3af;
+              cursor: not-allowed;
+              border-color: #d1d5db;
+              
+              &:hover {
+                background-color: #f3f4f6;
+              }
+            }
             &.guest-btn {
               background-color: transparent;
               color: #F43F5E;
               border: 1px solid #F43F5E;
+              &:disabled{
+                border: 1px solid #d1d5db;
+                color: #9ca3af;
+              }
               &:hover {
                 background-color: #fff5f6;
               }
