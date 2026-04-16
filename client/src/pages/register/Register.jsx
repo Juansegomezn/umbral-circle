@@ -22,6 +22,18 @@ export const Register = () => {
   
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    if (Object.values(inputs).some(value => value.trim() === "")) {
+      return setErr("All fields are required.");
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(inputs.email)) {
+      return setErr("Please enter a valid email address.");
+    }
+    if (inputs.password.length < 8) {
+      return setErr("Password must be at least 8 characters long.");
+    }
+
     setLoading(true);
     try {
       await makeRequest.post('/auth/register', inputs);
@@ -55,6 +67,7 @@ export const Register = () => {
               name='username' 
               onChange={handleChange} 
               disabled={loading}
+              required
             />
             <input 
               type="email" 
@@ -62,13 +75,16 @@ export const Register = () => {
               name='email' 
               onChange={handleChange} 
               disabled={loading}
+              required
             />
             <input 
               type="password" 
-              placeholder='Password' 
+              placeholder='Password (min. 8 chars)' 
               name='password' 
               onChange={handleChange} 
               disabled={loading}
+              minLength={8}
+              required
             />
             <input 
               type="text" 
@@ -76,6 +92,7 @@ export const Register = () => {
               name='name' 
               onChange={handleChange} 
               disabled={loading}
+              required
             />
             {err && <span style={{ color: 'red', fontSize: '12px' }}>{err}</span>}
             <div className="button-box">
