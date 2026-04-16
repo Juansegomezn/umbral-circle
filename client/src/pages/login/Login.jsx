@@ -34,12 +34,17 @@ export const Login = () => {
 
   const handleLogin = async (e) => {
     if (e) e.preventDefault();
+    
+    if (Object.values(inputs).some(value => value.trim() === "")) {
+      return setErr("All fields are required.");
+    }
+    
     setLoading(true);
     try {
       await login(inputs);
       navigate('/');
     } catch (err) {
-      setErr(err.response?.data || 'An error occurred during login. Please try again.');
+      setErr(err.response?.data || 'Invalid username or password.');
       setLoading(false);
     }
   };
