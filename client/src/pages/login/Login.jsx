@@ -18,6 +18,17 @@ export const Login = () => {
     if(err) setErr(null);
   };
 
+  const handleGuestLogin = async () => {
+    const guestCredentials = { username: 'Guess', password: '12345' };
+    setInputs(guestCredentials);
+    try {
+      await login(guestCredentials);
+      navigate('/');
+    } catch (err) {
+      setErr(err.response?.data || 'Guest login failed.');
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -45,11 +56,31 @@ export const Login = () => {
         <div className="right">
           <h1>Login</h1>
           <form onSubmit={handleLogin}>
-            <input type="text" placeholder='Username' name='username' onChange={handleChange}/>
-            <input type="password" placeholder='Password' name='password' onChange={handleChange}/>
-            {err && <span style={{color:'red', fontSize:'12px'}}>{err}</span>}
+            <input 
+              type="text" 
+              placeholder='Username' 
+              name='username' 
+              value={inputs.username}
+              onChange={handleChange}
+            />
+            <input 
+              type="password" 
+              placeholder='Password' 
+              name='password' 
+              value={inputs.password}
+              onChange={handleChange}
+            />
+            {err && <span style={{ color: 'red', fontSize: '12px' }}>{err}</span>}
             <div className="button-box">
               <button type="submit">Login</button>
+              
+              <button 
+                type="button" 
+                className="guest-btn" 
+                onClick={handleGuestLogin}
+              >
+                Login as Guest
+              </button>
             </div>
           </form>
 

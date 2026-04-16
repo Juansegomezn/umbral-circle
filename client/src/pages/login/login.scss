@@ -80,7 +80,9 @@
         }
         .button-box{
           display: flex;
-          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
           button {
             width: 60%;
             padding: 10px;
@@ -89,6 +91,14 @@
             color: #FFFFFF;
             font-weight: bold;
             cursor: pointer;
+            &.guest-btn {
+              background-color: transparent;
+              color: #F43F5E;
+              border: 1px solid #F43F5E;
+              &:hover {
+                background-color: #fff5f6;
+              }
+            }
             @include mobile {
               width: 100%;
             }
