@@ -98,7 +98,16 @@
             background-color: #F43F5E;
             color: #FFFFFF;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
             cursor: pointer;
+            &:disabled {
+              background-color: #f3f4f6;
+              color: #9ca3af;
+              cursor: not-allowed;
+            }
             @include mobile {
               width: 100%;
             }
