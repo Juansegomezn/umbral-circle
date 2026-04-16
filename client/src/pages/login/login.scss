@@ -26,9 +26,12 @@
     }
     .left {
       flex: 1;
-      background: linear-gradient(rgba(46, 1, 1, 0.5), rgba(46, 1, 1, 0.5)), 
-        url('https://images.pexels.com/photos/5081918/pexels-photo-5081918.jpeg') center;
+      background-color: #2e0101; 
+      background: linear-gradient(rgba(46, 1, 1, 0.5), rgba(46, 1, 1, 0.5)),
+        url('https://images.pexels.com/photos/5081918/pexels-photo-5081918.jpeg?auto=compress&cs=tinysrgb&w=800') center;
       background-size: cover;
+      image-rendering: -webkit-optimize-contrast; 
+      transition: opacity 0.5s ease-in;
       padding: 50px;
       display: flex;
       flex-direction: column;
