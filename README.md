@@ -14,11 +14,13 @@ Umbral Circle is a full-featured social network that demonstrates professional f
 
 ## ✨ Features
 
-### Authentication & Security
-- **Authentication:** Secure Login/Register using JWT and Cookies.
-- 🔐 **Secure Registration & Login** - User authentication with JWT tokens stored in httpOnly cookies
-- 🔒 **Password Hashing** - Bcryptjs for secure password management
-- 🚪 **Logout:** Server-side cookie clearance and local state reset.
+### 🔐 Authentication & Security
+- **Secure Registration & Login** - User authentication with JWT tokens stored in httpOnly cookies
+- **Password Hashing** - Bcryptjs for secure password management
+- **Logout:** Server-side cookie clearance and local state reset.
+- **Client-Side Validation:** Robust form validation in Login and Register (Email regex, 8-character password minimum, and empty field prevention).
+- **Guest Access:** "Login as Guest" feature for instant platform exploration without registration.
+- **Visual Feedback:** Integrated loading states with `CircularProgress` and button disabling to prevent duplicate API requests.
 
 ### Social Features
 - 📝 **Create Posts** - Share text and images with your network
@@ -45,6 +47,9 @@ Umbral Circle is a full-featured social network that demonstrates professional f
 - **Mobile-First Navigation:** Custom hamburger menu dropdown for account management and a dedicated mobile search overlay with toggleable "Lupa/X" icons.
 - **Improved UX:** Interactive sidebar and profile sections for intuitive navigation.
 
+### ⚡ Performance Optimization
+- **Image Optimization:** Background images for Auth pages use Pexels URL parameters for auto-compression and resizing (WebP support).
+- **Asset Preloading:** Critical assets are preloaded in the HTML head to reduce LCP (Largest Contentful Paint) times.
 ---
 
 ## 🛠️ Tech Stack
@@ -55,7 +60,7 @@ Umbral Circle is a full-featured social network that demonstrates professional f
 - **State Management:** TanStack Query (React Query) for server state
 - **API Client:** Axios for HTTP requests
 - **Routing:** React Router DOM
-- **Icons:** Material UI Icons
+- **UI Components:** Material UI (Icons & Loaders)
 - **HTTP Security:** Cookie-based JWT authentication
 
 ### Backend
@@ -473,9 +478,9 @@ taskkill /PID <PID> /F
 ```
 
 ### Database Connection Error
-- Verify MySQL is running
-- Check `.env` credentials
-- Ensure database exists: `CREATE DATABASE umbral_circle;`
+- Ensure your Supabase instance is active.
+- Verify `.env` credentials (DB_HOST, DB_PORT 5432).
+- Check PostgreSQL connection limits if using a free tier.
 
 ### CORS Issues
 - Backend CORS is configured to allow frontend requests
