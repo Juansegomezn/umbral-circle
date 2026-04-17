@@ -478,9 +478,10 @@ taskkill /PID <PID> /F
 ```
 
 ### Database Connection Error
-- Ensure your Supabase instance is active.
+- Ensure your PostgreSQL instance is running (Supabase).
 - Verify `.env` credentials (DB_HOST, DB_PORT 5432).
 - Check PostgreSQL connection limits if using a free tier.
+- Refer to `umbral-db.docx` for the exact schema structure and reference images.
 
 ### CORS Issues
 - Backend CORS is configured to allow frontend requests
