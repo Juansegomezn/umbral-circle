@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useRef, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/authContext';
 import { useQuery } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
@@ -9,19 +9,30 @@ export const Stories = () => {
   const { currentUser } = useContext(AuthContext);
   const scrollRef = useRef(null);
   const [showLeft, setShowLeft] = useState(false);
-  const [showRight, setShowRight] = useState(true);
+  const [showRight, setShowRight] = useState(false);
 
   const { isLoading, error, data: stories } = useQuery({
     queryKey: ['stories'],
     queryFn: () => makeRequest.get('/stories').then((res) => res.data)
   });
 
-  const handleScroll = () => {
-    if (!scrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-    setShowLeft(scrollLeft > 0);
-    setShowRight(scrollLeft < scrollWidth - clientWidth - 1);
+  const checkScrollLimits = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      
+      setShowLeft(scrollLeft > 0);
+      setShowRight(scrollWidth > clientWidth && scrollLeft < scrollWidth - clientWidth - 1);
+    }
   };
+
+  useEffect(() => {
+    if (!isLoading && stories) {
+      const timer = setTimeout(() => {
+        checkScrollLimits();
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [stories, isLoading]);
 
   const scrollClick = (direction) => {
     const { current } = scrollRef;
@@ -36,7 +47,7 @@ export const Stories = () => {
     <div className="stories-container">
       {showLeft && <div className="arrow left" onClick={() => scrollClick("left")}>{"<"}</div>}
       
-      <div className="stories" ref={scrollRef} onScroll={handleScroll}>
+      <div className="stories" ref={scrollRef} onScroll={checkScrollLimits}>
         <div className="story current-user-story">
           <img src={currentUser.profilePic} alt={currentUser.name} />
           <span>New Story</span>
