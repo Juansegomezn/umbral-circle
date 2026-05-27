@@ -3,15 +3,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-// body {
-//   font-family: 'Plus Jakarta Sans', sans-serif;
-//   line-height: 1.5;
-//   transition: background-color 0.3s ease, color 0.3s ease;
-//   @include themify($themes) {
-//     background-color: themed('bg');
-//     color: themed('textColor');
-//   }
-// }
 
 $themes: (
   light: (
