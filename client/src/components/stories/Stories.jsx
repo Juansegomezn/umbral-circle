@@ -4,12 +4,14 @@ import { useQuery } from '@tanstack/react-query';
 import { makeRequest } from '../../axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import './stories.scss';
+import { AddStory } from '../addStory/AddStory';
 
 export const Stories = () => {
   const { currentUser } = useContext(AuthContext);
   const scrollRef = useRef(null);
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const { isLoading, error, data: stories } = useQuery({
     queryKey: ['stories'],
@@ -51,7 +53,7 @@ export const Stories = () => {
         <div className="story current-user-story">
           <img src={currentUser.profilePic} alt={currentUser.name} />
           <span>New Story</span>
-          <button>+</button>
+          <button onClick={() => setOpenModal(true)}>+</button>
         </div>
 
         {error && <div className="story-message">Error loading stories</div>}
@@ -79,6 +81,8 @@ export const Stories = () => {
       </div>
 
       {showRight && !isLoading && <div className="arrow right" onClick={() => scrollClick("right")}>{">"}</div>}
+
+      {openModal && <AddStory setOpen={setOpenModal} />}
     </div>
   );
 };
