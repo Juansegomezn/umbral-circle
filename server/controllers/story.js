@@ -146,7 +146,7 @@ export const deleteStory = async (req, res) => {
     const data = await db.query(q, [req.params.storyId, userId]);
     if (data.rows.length === 0) return res.status(403).json("You can delete only your story!");
 
-    const filePath = `../front/public/upload/${data.rows[0].contentUrl}`;
+    const filePath = `../client/public/upload/${data.rows[0].contentUrl}`;
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 
     return res.status(200).json("Story has been deleted.");

@@ -1,9 +1,16 @@
 import multer from "multer";
 import path from "path";
+import fs from "fs";
+
+
+const uploadDir = path.join("..", "client", "public", "upload");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "../../client/public/upload");
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -18,7 +25,7 @@ const fileFilter = (req, file, cb) => {
   if (mimeType && extName) {
     return cb(null, true);
   }
-  cb(new Error("Only images (jpeg, jpg, png, gif) and videos (mp4, webm) are allowed!"));
+  cb(new Error("Only images and videos are allowed!"));
 };
 
 export const uploadStory = multer({
