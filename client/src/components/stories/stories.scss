@@ -52,6 +52,7 @@
       overflow: hidden;
       position: relative;
       background-color: #762222;
+      &:hover { opacity: 0.75; }
       @include mobile { flex: 0 0 100px; }
       img, video {
         width: 100%;

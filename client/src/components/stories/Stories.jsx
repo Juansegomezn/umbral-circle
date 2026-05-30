@@ -5,6 +5,7 @@ import { makeRequest } from '../../axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import './stories.scss';
 import { AddStory } from '../addStory/AddStory';
+import { StoryViewer } from '../storyViewer/StoryViewer';
 
 export const Stories = () => {
   const { currentUser } = useContext(AuthContext);
@@ -12,6 +13,7 @@ export const Stories = () => {
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [selectedStory, setSelectedStory] = useState(null);
 
   const { isLoading, error, data: stories } = useQuery({
     queryKey: ['stories'],
@@ -58,19 +60,12 @@ export const Stories = () => {
 
         {error && <div className="story-message">Error loading stories</div>}
         {isLoading ? (
-          <div className="story-loader">
-            <CircularProgress size={30} color="inherit" style={{ color: '#F43F5E' }} />
-          </div>
+          <div className="story-loader"> <CircularProgress size={30} color="inherit" style={{ color: '#F43F5E' }} /> </div>
         ) : (
-          stories?.map((story) => (
-            <div className="story" key={story.id}>
+        stories?.map((story) => (
+            <div className="story" key={story.id} onClick={() => setSelectedStory(story)} style={{ cursor: 'pointer' }}>
               {story.contentType === 'video' ? (
-                <video 
-                  src={`/upload/${story.contentUrl}`} 
-                  muted 
-                  playsInline
-                  autoPlay={false}
-                />
+                <video src={`/upload/${story.contentUrl}`} muted playsInline />
               ) : (
                 <img src={`/upload/${story.contentUrl}`} alt={story.name} />
               )}
@@ -83,6 +78,7 @@ export const Stories = () => {
       {showRight && !isLoading && <div className="arrow right" onClick={() => scrollClick("right")}>{">"}</div>}
 
       {openModal && <AddStory setOpen={setOpenModal} />}
+      {selectedStory && (<StoryViewer story={selectedStory} setOpen={setSelectedStory} />)}
     </div>
   );
 };
