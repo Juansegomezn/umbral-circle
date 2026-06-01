@@ -13,12 +13,14 @@ import { makeRequest } from '../../axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/authContext';
+import { ConfirmModal } from '../confirmModal/ConfirmModal';
 
 export const Post = ({post}) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const {currentUser} = useContext(AuthContext);
   const queryClient = useQueryClient();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const { isLoading, error, data } = useQuery({
     queryKey: ['likes', post.id], 
@@ -73,7 +75,8 @@ export const Post = ({post}) => {
 
   const handleDelete = () => {
     deleteMutation.mutate(post.id);
-  }
+    setShowDeleteConfirm(false);
+  };
   
   return (
     <div className='post'>
@@ -94,7 +97,7 @@ export const Post = ({post}) => {
               {menuOpen && (
                 <>
                   <div className="menu-overlay" onClick={() => setMenuOpen(false)} />
-                  <div className="delete-container" onClick={handleDelete}>
+                  <div className="delete-container" onClick={() => setShowDeleteConfirm(true)}>
                     <DeleteOutlineIcon className="delete-icon" />
                     <span>Delete</span>
                   </div>
@@ -129,7 +132,18 @@ export const Post = ({post}) => {
             Share
           </div>
         </div>
+
         {commentOpen && <Comments postId={post.id}/>}
+        {showDeleteConfirm && (
+          <ConfirmModal
+            title="Delete Post"
+            message="Are you sure you want to permanently delete this post? This action cannot be undone."
+            confirmText="Delete"
+            onConfirm={handleDelete}
+            onClose={() => setShowDeleteConfirm(false)}
+            danger={true}
+          />
+        )}
       </div>
     </div>
   )
