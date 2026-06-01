@@ -17,6 +17,18 @@ export const StoryViewer = ({ story, setOpen }) => {
   const [showStats, setShowStats] = useState(false);
   
   const queryClient = useQueryClient();
+  
+  const formatTimeAgo = (dateString) => {
+    const now = new Date();
+    const created = new Date(dateString);
+    const diffInMs = now - created;
+    const diffInMins = Math.floor(diffInMs / (1000 * 60));
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+
+    if (diffInMins < 1) return "Just now";
+    if (diffInMins < 60) return `${diffInMins}m ago`;
+    return `${diffInHours}h ago`;
+  };
 
   const { data: stats, isLoading: loadingStats } = useQuery({
     queryKey: ["storyStats", story.id],
@@ -73,6 +85,7 @@ export const StoryViewer = ({ story, setOpen }) => {
             </div>
           </div>
           <div className="actions">
+            <span className="storyTimer">{formatTimeAgo(story.createdAt)}</span>
             {isOwner && (
               <button className="deleteBtn" onClick={handleDelete} title="Delete Story">
                 <DeleteIcon />
