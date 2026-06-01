@@ -10,6 +10,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import multer from "multer";
 import dotenv from "dotenv";
+import { initStoryCleanupCron } from "./cron/storyCleanup.js";
 
 dotenv.config();
 
@@ -68,6 +69,8 @@ app.use("/comments", commentsRoutes);
 app.use("/likes", likesRoutes);
 app.use("/relationships", relationshipsRoutes);
 app.use("/stories", storyRoutes);
+
+initStoryCleanupCron();
 
 if (process.env.NODE_ENV !== 'production') {
     app.listen(3000, () => {
