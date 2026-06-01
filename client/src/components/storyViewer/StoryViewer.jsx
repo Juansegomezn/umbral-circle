@@ -7,6 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./storyViewer.scss";
+import { ConfirmModal } from "../confirmModal/ConfirmModal";
 
 
 const AVAILABLE_EMOJIS = ["🔥", "❤️", "😂", "😮", "😢", "👏"];
@@ -15,6 +16,7 @@ export const StoryViewer = ({ story, setOpen }) => {
   const { currentUser } = useContext(AuthContext);
   const isOwner = currentUser.id === story.userId;
   const [showStats, setShowStats] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   
   const queryClient = useQueryClient();
   
@@ -66,10 +68,13 @@ export const StoryViewer = ({ story, setOpen }) => {
     reactMutation.mutate(emoji);
   };
 
+  const handleDeleteTrigger = () => {
+    setShowDeleteConfirm(true);
+  };
+
   const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete this story?")) {
-      deleteMutation.mutate();
-    }
+    deleteMutation.mutate();
+    setShowDeleteConfirm(false);
   };
 
   return (
@@ -87,7 +92,7 @@ export const StoryViewer = ({ story, setOpen }) => {
           <div className="actions">
             <span className="storyTimer">{formatTimeAgo(story.createdAt)}</span>
             {isOwner && (
-              <button className="deleteBtn" onClick={handleDelete} title="Delete Story">
+              <button className="deleteBtn" onClick={handleDeleteTrigger} title="Delete Story">
                 <DeleteIcon />
               </button>
             )}
@@ -153,6 +158,16 @@ export const StoryViewer = ({ story, setOpen }) => {
           </div>
         )}
 
+        {showDeleteConfirm && (
+          <ConfirmModal
+            title="Delete Story"
+            message="Are you sure you want to delete this story? This action cannot be undone."
+            confirmText="Delete"
+            onConfirm={handleDelete}
+            onClose={() => setShowDeleteConfirm(false)}
+            danger={true}
+          />
+        )}
       </div>
     </div>
   );
