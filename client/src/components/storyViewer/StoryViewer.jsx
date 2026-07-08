@@ -17,6 +17,7 @@ export const StoryViewer = ({ story, setOpen }) => {
   const isOwner = currentUser.id === story.userId;
   const [showStats, setShowStats] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [userReaction, setUserReaction] = useState(null);
   
   const queryClient = useQueryClient();
   
@@ -44,7 +45,8 @@ export const StoryViewer = ({ story, setOpen }) => {
 
   const reactMutation = useMutation({
     mutationFn: (emoji) => makeRequest.post(`/stories/${story.id}/react`, { emoji }),
-    onSuccess: () => {
+    onSuccess: (res, emoji) => {
+      setUserReaction(emoji);
       queryClient.invalidateQueries(["storyStats", story.id]);
     },
   });
@@ -123,7 +125,11 @@ export const StoryViewer = ({ story, setOpen }) => {
           ) : (
             <div className="reactionBar">
               {AVAILABLE_EMOJIS.map((emoji) => (
-                <button key={emoji} className="emojiBtn" onClick={() => handleReact(emoji)}>
+                <button 
+                  key={emoji} 
+                  className={`emojiBtn ${userReaction === emoji ? "active" : ""}`} 
+                  onClick={() => handleReact(emoji)}
+                >
                   {emoji}
                 </button>
               ))}

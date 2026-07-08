@@ -62,3 +62,15 @@ body {
     background-color: themed('bgSoft');
   }
 }
+
+@keyframes popEffect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.7);
+  }
+  100% {
+    transform: scale(1.4);
+  }
+}
