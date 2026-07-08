@@ -1,0 +1,35 @@
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+
+
+const uploadDir = path.join("..", "client", "public", "upload");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = /jpeg|jpg|png|gif|mp4|webm|quicktime/;
+  const mimeType = allowedTypes.test(file.mimetype);
+  const extName = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+
+  if (mimeType && extName) {
+    return cb(null, true);
+  }
+  cb(new Error("Only images and videos are allowed!"));
+};
+
+export const uploadStory = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: { fileSize: 15 * 1024 * 1024 }, 
+}).single("file");

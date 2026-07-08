@@ -5,10 +5,12 @@ import postsRoutes from "./routes/posts.js";
 import commentsRoutes from "./routes/comments.js";
 import likesRoutes from "./routes/likes.js";
 import relationshipsRoutes from "./routes/relationships.js";
+import storyRoutes from "./routes/stories.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import multer from "multer";
 import dotenv from "dotenv";
+import { initStoryCleanupCron } from "./cron/storyCleanup.js";
 
 dotenv.config();
 
@@ -66,6 +68,9 @@ app.use("/posts", postsRoutes);
 app.use("/comments", commentsRoutes);
 app.use("/likes", likesRoutes);
 app.use("/relationships", relationshipsRoutes);
+app.use("/stories", storyRoutes);
+
+initStoryCleanupCron();
 
 if (process.env.NODE_ENV !== 'production') {
     app.listen(3000, () => {

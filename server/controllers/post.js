@@ -10,14 +10,14 @@ export const getPosts = (req, res) => {
 
     const userId = req.query.userId;
     const q = userId !== undefined 
-      ? `SELECT p.*, u.id AS "userId", u.name, u."profilePic", COUNT(c.id) AS "commentCount" 
+      ? `SELECT p.*, u.id AS "userId", u.name, u."profilePic", COUNT(DISTINCT c.id) AS "commentCount" 
         FROM posts AS p 
         JOIN users AS u ON (u.id = p."userId") 
         LEFT JOIN comments AS c ON (c."postId" = p.id)
         WHERE p."userId" = $1 
         GROUP BY p.id, u.id, u.name, u."profilePic"
         ORDER BY p."createdAt" DESC`
-      : `SELECT DISTINCT p.*, u.id AS "userId", u.name, u."profilePic", COUNT(c.id) AS "commentCount" 
+      : `SELECT DISTINCT p.*, u.id AS "userId", u.name, u."profilePic", COUNT(DISTINCT c.id) AS "commentCount" 
         FROM posts AS p 
         JOIN users AS u ON (u.id = p."userId")
         LEFT JOIN relationships AS r ON (r."followedUserId" = p."userId") 

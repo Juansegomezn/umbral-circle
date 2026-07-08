@@ -58,3 +58,42 @@ CREATE TABLE umbral.relationships (
   CONSTRAINT fk_rel_followed FOREIGN KEY ("followedUserId") 
     REFERENCES umbral.users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- 6. Main Stories Table
+CREATE TABLE umbral.stories (
+  id SERIAL PRIMARY KEY,
+  "userId" INT NOT NULL,
+  "contentUrl" VARCHAR(300) NOT NULL,
+  "contentType" VARCHAR(10) NOT NULL, -- 'image' or 'video'
+  "createdAt" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_story_user FOREIGN KEY ("userId") 
+    REFERENCES umbral.users (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE INDEX idx_stories_user_date ON umbral.stories("userId", "createdAt" DESC);
+
+-- 7. Story Views Table
+CREATE TABLE umbral.story_views (
+  id SERIAL PRIMARY KEY,
+  "storyId" INT NOT NULL,
+  "userId" INT NOT NULL,
+  "viewedAt" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_view_story FOREIGN KEY ("storyId") 
+    REFERENCES umbral.stories (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_view_user FOREIGN KEY ("userId") 
+    REFERENCES umbral.users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT unique_user_story_view UNIQUE ("storyId", "userId")
+);
+
+-- 8. Story Reactions Table
+CREATE TABLE umbral.story_reactions (
+  id SERIAL PRIMARY KEY,
+  "storyId" INT NOT NULL,
+  "userId" INT NOT NULL,
+  "emoji" VARCHAR(10) NOT NULL,
+  "reactedAt" TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_reaction_story FOREIGN KEY ("storyId") 
+    REFERENCES umbral.stories (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_reaction_user FOREIGN KEY ("userId") 
+    REFERENCES umbral.users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT unique_user_story_reaction UNIQUE ("storyId", "userId")
+);
