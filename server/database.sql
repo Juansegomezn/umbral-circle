@@ -5,8 +5,8 @@ CREATE TABLE umbral.users (
   email VARCHAR(45) NOT NULL UNIQUE,
   password VARCHAR(200) NOT NULL,
   name VARCHAR(45) NOT NULL,
-  "coverPic" VARCHAR(300),
-  "profilePic" VARCHAR(300),
+  "coverPic" VARCHAR(300) DEFAULT 'defaultCoverPic.jpg',
+  "profilePic" VARCHAR(300) DEFAULT 'defaultProfilePic.png',
   location VARCHAR(45),
   website VARCHAR(45)
 );

@@ -32,6 +32,7 @@ Umbral Circle is a full-featured social network that demonstrates professional f
 ### User Profile
 - 👤 **Profile Management** - Edit profile information and preferences
 - 🖼️ **Cover & Profile Pictures** - Upload and update profile images
+- 🖼️ **Default Asset Handling** - Database-level `DEFAULT` constraints for missing profile (`defaultAvatar.png`) and cover (`defaultCover.jpg`) assets with seamless JSX fallback rendering.
 - 📍 **Profile Information** - Manage username, name, city, and website
 - 🎨 **Profile Customization** - Display user cover photo and profile picture
 
@@ -145,8 +146,8 @@ The MySQL database consists of 6 primary tables with relationships:
 - email (VARCHAR(45), UNIQUE)
 - password (VARCHAR(200)) 
 - name (VARCHAR(45))
-- profilePic (VARCHAR(300)) 
-- coverPic (VARCHAR(300)) 
+- profilePic (VARCHAR(300), DEFAULT 'defaultProfilePic.png') 
+- coverPic (VARCHAR(300), DEFAULT 'defaultCoverPic.jpg')
 - location (VARCHAR(45))
 - website (VARCHAR(45))
 ```
