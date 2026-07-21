@@ -38,9 +38,10 @@ app.use(cors({
         }
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
+app.options("*", cors());
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -70,9 +71,9 @@ app.use("/likes", likesRoutes);
 app.use("/relationships", relationshipsRoutes);
 app.use("/stories", storyRoutes);
 
-initStoryCleanupCron();
 
 if (process.env.NODE_ENV !== 'production') {
+    initStoryCleanupCron();
     app.listen(3000, () => {
         console.log("Server is running on port 3000");
     });
