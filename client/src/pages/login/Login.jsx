@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom'
 import './login.scss'
 import { AuthContext } from '../../context/authContext';
-import { useContext } from 'react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const Login = () => {
   const {login} = useContext(AuthContext);
@@ -11,6 +11,7 @@ export const Login = () => {
     password: ''
   });
   const [err, setErr] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,13 +19,33 @@ export const Login = () => {
     if(err) setErr(null);
   };
 
+  const handleGuestLogin = async () => {
+    const guestCredentials = { username: 'Guess', password: '12345' };
+    setInputs(guestCredentials);
+    setLoading(true);
+    try {
+      await login(guestCredentials);
+      navigate('/');
+    } catch (err) {
+      setErr(err.response?.data || 'Guest login failed.');
+      setLoading(false);
+    }
+  };
+
   const handleLogin = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
+    
+    if (Object.values(inputs).some(value => value.trim() === "")) {
+      return setErr("All fields are required.");
+    }
+    
+    setLoading(true);
     try {
       await login(inputs);
       navigate('/');
     } catch (err) {
-      setErr(err.response?.data || 'An error occurred during login. Please try again.');
+      setErr(err.response?.data || 'Invalid username or password.');
+      setLoading(false);
     }
   };
 
@@ -45,13 +66,44 @@ export const Login = () => {
         <div className="right">
           <h1>Login</h1>
           <form onSubmit={handleLogin}>
-            <input type="text" placeholder='Username' name='username' onChange={handleChange}/>
-            <input type="password" placeholder='Password' name='password' onChange={handleChange}/>
-            {err && <span style={{color:'red', fontSize:'12px'}}>{err}</span>}
+            <input 
+              type="text" 
+              placeholder='Username' 
+              name='username' 
+              value={inputs.username}
+              onChange={handleChange}
+              disabled={loading}
+            />
+            <input 
+              type="password" 
+              placeholder='Password' 
+              name='password' 
+              value={inputs.password}
+              onChange={handleChange}
+              disabled={loading}
+            />
+            {err && <span style={{ color: 'red', fontSize: '12px' }}>{err}</span>}
             <div className="button-box">
-              <button type="submit">Login</button>
+              {loading && <CircularProgress size={20} />}
+              <button type="submit" disabled={loading}>Login</button>
+
+              <button 
+                type="button" 
+                className="guest-btn" 
+                onClick={handleGuestLogin}
+                disabled={loading}
+              >
+                Login as Guest
+              </button>
             </div>
           </form>
+
+          <div className="mobile-register">
+            <span>Don't you have an account yet?</span>
+            <Link to="/register">
+              <button>Register</button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

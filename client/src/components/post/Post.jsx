@@ -13,12 +13,14 @@ import { makeRequest } from '../../axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/authContext';
+import { ConfirmModal } from '../confirmModal/ConfirmModal';
 
 export const Post = ({post}) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const {currentUser} = useContext(AuthContext);
   const queryClient = useQueryClient();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const { isLoading, error, data } = useQuery({
     queryKey: ['likes', post.id], 
@@ -33,9 +35,28 @@ export const Post = ({post}) => {
       if (liked) return makeRequest.delete("/likes", { params: { postId: post.id } });
       return makeRequest.post('/likes', { postId: post.id });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['likes', post.id]);
-    }
+    // Step 1: Update state optimistically before the server responds
+    onMutate: async (liked) => {
+      await queryClient.cancelQueries({ queryKey: ['likes', post.id] });
+      const previousLikes = queryClient.getQueryData(['likes', post.id]);
+
+      queryClient.setQueryData(['likes', post.id], (old) => {
+        if (liked) {
+          return old.filter((like) => like.userId !== currentUser.id);
+        }
+        return [...(old || []), { userId: currentUser.id }];
+      });
+
+      return { previousLikes };
+    },
+    // Step 2: If the server returns an error
+    onError: (err, liked, context) => {
+      queryClient.setQueryData(['likes', post.id], context.previousLikes);
+    },
+    // Step 3: Regardless of the outcome, synchronize with the reality
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['likes', post.id] });
+    },
   })
 
   const deleteMutation = useMutation({
@@ -48,12 +69,14 @@ export const Post = ({post}) => {
   })
 
   const handleLike = () => {
-    likeMutation.mutate(data?.some(like => like.userId === currentUser.id));
+    const isLiked = data?.some(like => like.userId === currentUser.id);
+    likeMutation.mutate(isLiked);
   }
 
   const handleDelete = () => {
     deleteMutation.mutate(post.id);
-  }
+    setShowDeleteConfirm(false);
+  };
   
   return (
     <div className='post'>
@@ -74,7 +97,7 @@ export const Post = ({post}) => {
               {menuOpen && (
                 <>
                   <div className="menu-overlay" onClick={() => setMenuOpen(false)} />
-                  <div className="delete-container" onClick={handleDelete}>
+                  <div className="delete-container" onClick={() => setShowDeleteConfirm(true)}>
                     <DeleteOutlineIcon className="delete-icon" />
                     <span>Delete</span>
                   </div>
@@ -93,10 +116,10 @@ export const Post = ({post}) => {
           )}
         </div>
         <div className="info">
-          <div className="item">
+          <div className="item" onClick={handleLike}>
             {data?.some(like => like.userId === currentUser.id) 
-              ? <FavoriteOutlinedIcon onClick={handleLike} style={{color:'#F43F5E'}}/> 
-              : <FavoriteBorderOutlinedIcon onClick={handleLike}/>
+              ? <FavoriteOutlinedIcon style={{color:'#F43F5E'}}/> 
+              : <FavoriteBorderOutlinedIcon />
             }
             {data?.length || 0} Likes
           </div>
@@ -109,7 +132,18 @@ export const Post = ({post}) => {
             Share
           </div>
         </div>
+
         {commentOpen && <Comments postId={post.id}/>}
+        {showDeleteConfirm && (
+          <ConfirmModal
+            title="Delete Post"
+            message="Are you sure you want to permanently delete this post? This action cannot be undone."
+            confirmText="Delete"
+            onConfirm={handleDelete}
+            onClose={() => setShowDeleteConfirm(false)}
+            danger={true}
+          />
+        )}
       </div>
     </div>
   )

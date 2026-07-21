@@ -14,15 +14,17 @@ import TutorialsIcon from '../../assets/tutorials.svg'
 import CoursesIcon from '../../assets/courses.svg'
 import { AuthContext } from '../../context/authContext'
 import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const LeftBar = () => {
   const {currentUser} = useContext(AuthContext);
+  const navigate = useNavigate();
 
   return (
     <div className='leftBar'>
       <div className="container">
         <div className="menu">
-          <div className="user">
+          <div className="user" onClick={() => navigate(`/profile/${currentUser.id}`)}>
             <img src={currentUser.profilePic} alt="Profile Image" />
             <span>{currentUser.name}</span>
           </div>

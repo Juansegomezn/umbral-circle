@@ -28,6 +28,20 @@ export const AuthContextProvider = ({children}) => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await makeRequest.get("/auth/check"); 
+      } catch (err) {
+        if (err.response?.status === 401) {
+          setCurrentUser(null);
+          localStorage.removeItem("user");
+        }
+      }
+    };
+    if (currentUser) checkAuth();
+  }, []);
+
   return (
     <AuthContext.Provider value={{currentUser, login, logout}}>
       {children}

@@ -26,9 +26,12 @@
     }
     .left {
       flex: 1;
-      background: linear-gradient(rgba(46, 1, 1, 0.5), rgba(46, 1, 1, 0.5)), 
-        url('https://images.pexels.com/photos/5081918/pexels-photo-5081918.jpeg') center;
+      background-color: #2e0101; 
+      background: linear-gradient(rgba(46, 1, 1, 0.5), rgba(46, 1, 1, 0.5)),
+        url('https://images.pexels.com/photos/5081918/pexels-photo-5081918.jpeg?auto=compress&cs=tinysrgb&w=800') center;
       background-size: cover;
+      image-rendering: -webkit-optimize-contrast; 
+      transition: opacity 0.5s ease-in;
       padding: 50px;
       display: flex;
       flex-direction: column;
@@ -80,7 +83,9 @@
         }
         .button-box{
           display: flex;
-          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
           button {
             width: 60%;
             padding: 10px;
@@ -88,10 +93,56 @@
             background-color: #F43F5E;
             color: #FFFFFF;
             font-weight: bold;
+            transition: all 0.3s ease;
             cursor: pointer;
+            &:disabled {
+              background-color: #f3f4f6;
+              color: #9ca3af;
+              cursor: not-allowed;
+              border-color: #d1d5db;
+              
+              &:hover {
+                background-color: #f3f4f6;
+              }
+            }
+            &.guest-btn {
+              background-color: transparent;
+              color: #F43F5E;
+              border: 1px solid #F43F5E;
+              &:disabled{
+                border: 1px solid #d1d5db;
+                color: #9ca3af;
+              }
+              &:hover {
+                background-color: #fff5f6;
+              }
+            }
             @include mobile {
               width: 100%;
             }
+          }
+        }
+      }
+      .mobile-register {
+        display: none;
+        @include mobile {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 15px;
+          margin-top: 10px;
+          span {
+            font-size: 14px;
+            color: gray;
+          }
+          button {
+            padding: 10px 20px;
+            border: 1px solid #F43F5E;
+            background-color: transparent;
+            color: #F43F5E;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
           }
         }
       }

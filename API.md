@@ -57,6 +57,7 @@ This document provides a detailed reference for all the API endpoints available 
 | :--- | :--- | :--- | :--- |
 | `GET` | `/find/:userId` | Get public profile information. (Excludes password). | ❌ |
 | `PUT` | `/` | Update current user profile. Expects all profile fields. | ✅ |
+| `GET` | `/search?name=QUERY` | Search users by name or username (case-insensitive). | ✅ |
 
 ---
 

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { LeftBar } from "./components/leftbar/LeftBar";
-import { Navbar } from "./components/navbar/NavBar";
+import { Navbar } from "./components/navbar/Navbar";
 import { RightBar } from "./components/rightbar/RightBar";
 import { Home } from "./pages/home/Home";
 import { Login } from "./pages/login/Login"

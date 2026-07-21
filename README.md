@@ -14,11 +14,13 @@ Umbral Circle is a full-featured social network that demonstrates professional f
 
 ## ✨ Features
 
-### Authentication & Security
-- **Authentication:** Secure Login/Register using JWT and Cookies.
-- 🔐 **Secure Registration & Login** - User authentication with JWT tokens stored in httpOnly cookies
-- 🔒 **Password Hashing** - Bcryptjs for secure password management
-- 🚪 **Logout:** Server-side cookie clearance and local state reset.
+### 🔐 Authentication & Security
+- **Secure Registration & Login** - User authentication with JWT tokens stored in httpOnly cookies
+- **Password Hashing** - Bcryptjs for secure password management
+- **Logout:** Server-side cookie clearance and local state reset.
+- **Client-Side Validation:** Robust form validation in Login and Register (Email regex, 8-character password minimum, and empty field prevention).
+- **Guest Access:** "Login as Guest" feature for instant platform exploration without registration.
+- **Visual Feedback:** Integrated loading states with `CircularProgress` and button disabling to prevent duplicate API requests.
 
 ### Social Features
 - 📝 **Create Posts** - Share text and images with your network
@@ -40,6 +42,14 @@ Umbral Circle is a full-featured social network that demonstrates professional f
 - 🖼️ **Image Preview** - Preview images before posting
 - 📂 **Dropdown Menus** - Intuitive menus for post management
 
+### 🔍 Advanced Search & Navigation
+- **Real-time User Search:** Integrated search bar in the Navbar using PostgreSQL `ILIKE` for high-performance user discovery.
+- **Mobile-First Navigation:** Custom hamburger menu dropdown for account management and a dedicated mobile search overlay with toggleable "Lupa/X" icons.
+- **Improved UX:** Interactive sidebar and profile sections for intuitive navigation.
+
+### ⚡ Performance Optimization
+- **Image Optimization:** Background images for Auth pages use Pexels URL parameters for auto-compression and resizing (WebP support).
+- **Asset Preloading:** Critical assets are preloaded in the HTML head to reduce LCP (Largest Contentful Paint) times.
 ---
 
 ## 🛠️ Tech Stack
@@ -50,7 +60,7 @@ Umbral Circle is a full-featured social network that demonstrates professional f
 - **State Management:** TanStack Query (React Query) for server state
 - **API Client:** Axios for HTTP requests
 - **Routing:** React Router DOM
-- **Icons:** Material UI Icons
+- **UI Components:** Material UI (Icons & Loaders)
 - **HTTP Security:** Cookie-based JWT authentication
 
 ### Backend
@@ -62,9 +72,10 @@ Umbral Circle is a full-featured social network that demonstrates professional f
 - **File Upload:** Multer for image uploads to local storage
 - **API Pattern:** RESTful architecture
 
-### Database
-- **System:** MySQL
-- **Design:** Relational schema with proper foreign keys and indexing
+### Database & Cloud
+- **System:** PostgreSQL (migrated from MySQL)
+- **Hosting:** Supabase (High-performance relational database)
+- **Infrastructure:** Previously MySQL/Railway, now optimized for Postgres.
 
 ---
 
@@ -208,12 +219,12 @@ relationships:
 
 3. **Create a `.env` file in the root of the `back` directory:**
    ```env
-   DB_HOST=localhost
-   DB_USER=root
-   DB_PASSWORD=your_password
-   DB_NAME=umbral_circle
-   JWT_SECRET_KEY=your_super_secret_key_here
-   PORT=3000
+   DB_HOST=your_supabase_db_host
+   DB_USER=postgres
+   DB_PASSWORD=your_supabase_password
+   DB_NAME=postgres
+   DB_PORT=5432
+   JWT_SECRET_KEY=your_secret_key
    ```
 
 4. **Start the development server:**
@@ -273,7 +284,7 @@ Alternatively, copy and execute the script within your preferred SQL client (MyS
 ### Users
 - `GET /api/users/:id` - Get user profile
 - `PUT /api/users/:id` - Update user information
-- `GET /api/users/friends/:userId` - Get user's followers
+- `GET /api/users/search?name=...` - Real-time user discovery.
 
 ### Posts
 - `GET /api/posts` - Get all posts / feed
@@ -360,7 +371,7 @@ npm run dev
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=yourpassword
-DB_NAME=umbral_circle
+DB_NAME=umbral
 JWT_SECRET_KEY=your_super_secret_jwt_key_here
 PORT=3000
 ```
@@ -467,9 +478,10 @@ taskkill /PID <PID> /F
 ```
 
 ### Database Connection Error
-- Verify MySQL is running
-- Check `.env` credentials
-- Ensure database exists: `CREATE DATABASE umbral_circle;`
+- Ensure your PostgreSQL instance is running (Supabase).
+- Verify `.env` credentials (DB_HOST, DB_PORT 5432).
+- Check PostgreSQL connection limits if using a free tier.
+- Refer to `umbral-db.docx` for the exact schema structure and reference images.
 
 ### CORS Issues
 - Backend CORS is configured to allow frontend requests
@@ -502,6 +514,6 @@ For issues, questions, or suggestions, please open an issue on GitHub.
 
 <div align="center">
 
-**Made by Juan Sebastian Gomez Ayala**
+**Developed by Juan Sebastian Gomez Ayala**
 
 </div>
