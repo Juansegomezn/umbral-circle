@@ -21,27 +21,30 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', true)
     next()
 })
-app.use(express.json());
-app.use(cookieParser());
+
 const allowedOrigins = [
     "https://umbral-circle-client.vercel.app",
     "http://localhost:5173"
 ];
+
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin) return callback(null, true);
-        
         if (allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
+            callback(null, true);
         } else {
-        callback(new Error("Not allowed by CORS"));
+            callback(new Error("Not allowed by CORS"));
         }
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
 app.options("*", cors());
+
+app.use(express.json());
+app.use(cookieParser());
 
 const storage = process.env.NODE_ENV === 'production'
     ? multer.diskStorage({
@@ -52,7 +55,7 @@ const storage = process.env.NODE_ENV === 'production'
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
             cb(null, file.fieldname + '-' + uniqueSuffix);
         }
-        })
+    })
     : multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, '../client/public/upload');
@@ -62,15 +65,6 @@ const storage = process.env.NODE_ENV === 'production'
             cb(null, file.fieldname + '-' + uniqueSuffix);
         }
     });
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, '../client/public/upload')
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, file.fieldname + '-' + uniqueSuffix)
-    }
-})
 
 const upload = multer({ storage: storage })
 
@@ -89,7 +83,6 @@ app.use("/comments", commentsRoutes);
 app.use("/likes", likesRoutes);
 app.use("/relationships", relationshipsRoutes);
 app.use("/stories", storyRoutes);
-
 
 if (process.env.NODE_ENV !== 'production') {
     initStoryCleanupCron();
