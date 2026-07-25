@@ -2,18 +2,21 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-
-const uploadDir = path.join("..", "client", "public", "upload");
+const isProduction = process.env.NODE_ENV === 'production';
+const uploadDir = isProduction 
+  ? '/tmp' 
+  : path.join(process.cwd(), "..", "client", "public", "upload");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    if (!fs.existsSync(uploadDir)) {
+    if (!isProduction && !fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
   },
 });
 
