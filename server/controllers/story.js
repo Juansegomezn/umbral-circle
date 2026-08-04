@@ -1,4 +1,5 @@
 import { db } from "../connect.js";
+import { uploadToSupabase } from "../utils/supabaseStorage.js";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 
@@ -18,17 +19,18 @@ export const addStory = async (req, res) => {
   if (!userId) return res.status(401).json("Not logged in!");
   if (!req.file) return res.status(400).json("No file uploaded!");
 
-  const contentUrl = req.file.filename;
-  const isVideo = req.file.mimetype.startsWith("video");
-  const contentType = isVideo ? "video" : "image";
-
-  const q = 'INSERT INTO umbral.stories ("userId", "contentUrl", "contentType") VALUES ($1, $2, $3) RETURNING *';
-  
   try {
-    const data = await db.query(q, [userId, contentUrl, contentType]);
-    return res.status(200).json("Story has been created.");
+    const publicUrl = await uploadToSupabase(req.file);
+    const isVideo = req.file.mimetype.startsWith("video");
+    const contentType = isVideo ? "video" : "image";
+
+    const q = 'INSERT INTO umbral.stories ("userId", "contentUrl", "contentType") VALUES ($1, $2, $3) RETURNING *';
+    await db.query(q, [userId, publicUrl, contentType]);
+
+    return res.status(200).json("Story created successfully!");
   } catch (err) {
-    return res.status(500).json(err);
+    console.error(err);
+    return res.status(500).json("Failed to upload file to cloud storage.");
   }
 };
 
