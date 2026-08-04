@@ -26,11 +26,39 @@ export const AddStory = ({ setOpen }) => {
     },
   });
 
-  const handleFileChange = (e) => {
+  const getVideoDuration = (selectedFile) => {
+    return new Promise((resolve, reject) => {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+      video.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(video.src);
+        resolve(video.duration);
+      };
+      video.onerror = () => reject("Error loading video preview.");
+      video.src = URL.createObjectURL(selectedFile);
+    });
+  };
+
+  const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
 
     setError(null);
+
+    if (selectedFile.type.startsWith("video")) {
+      try {
+        const duration = await getVideoDuration(selectedFile);
+        if (duration > 10) {
+          setError("Video duration cannot exceed 10 seconds!");
+          e.target.value = "";
+          return;
+        }
+      } catch (err) {
+        setError("Could not read video metadata.", err);
+        return;
+      }
+    }
+
     setFile(selectedFile);
 
     const fileUrl = URL.createObjectURL(selectedFile);

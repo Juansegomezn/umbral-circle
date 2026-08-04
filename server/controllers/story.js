@@ -1,6 +1,5 @@
 import { db } from "../connect.js";
 import jwt from "jsonwebtoken";
-import { getVideoDurationInSeconds } from "get-video-duration";
 import fs from "fs";
 
 const getUserIdFromToken = (req) => {
@@ -22,20 +21,6 @@ export const addStory = async (req, res) => {
   const contentUrl = req.file.filename;
   const isVideo = req.file.mimetype.startsWith("video");
   const contentType = isVideo ? "video" : "image";
-
-  // If it's a video, check duration before saving to DB
-  if (isVideo) {
-    try {
-      const duration = await getVideoDurationInSeconds(req.file.path);
-      if (duration > 10) {
-        fs.unlinkSync(req.file.path); 
-        return res.status(400).json("Video duration cannot exceed 10 seconds!");
-      }
-    } catch (error) {
-      fs.unlinkSync(req.file.path);
-      return res.status(500).json("Error processing video duration.");
-    }
-  }
 
   const q = 'INSERT INTO umbral.stories ("userId", "contentUrl", "contentType") VALUES ($1, $2, $3) RETURNING *';
   
@@ -113,7 +98,6 @@ export const getStoryStats = async (req, res) => {
   const userId = getUserIdFromToken(req);
   if (!userId) return res.status(401).json("Not logged in!");
 
-  // Verify that the user is the owner of the story before fetching stats
   const checkQ = 'SELECT "userId" FROM umbral.stories WHERE id = $1';
   const checkData = await db.query(checkQ, [req.params.storyId]);
   
@@ -146,7 +130,10 @@ export const deleteStory = async (req, res) => {
     const data = await db.query(q, [req.params.storyId, userId]);
     if (data.rows.length === 0) return res.status(403).json("You can delete only your story!");
 
-    const filePath = `../client/public/upload/${data.rows[0].contentUrl}`;
+    const isProduction = process.env.NODE_ENV === 'production';
+    const uploadDir = isProduction ? '/tmp' : '../client/public/upload';
+    const filePath = `${uploadDir}/${data.rows[0].contentUrl}`;
+    
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 
     return res.status(200).json("Story has been deleted.");
