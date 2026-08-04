@@ -10,7 +10,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import multer from "multer";
 import dotenv from "dotenv";
-// import { initStoryCleanupCron } from "./cron/storyCleanup.js";
+import { initStoryCleanupCron } from "./cron/storyCleanup.js";
 
 dotenv.config();
 
@@ -83,7 +83,7 @@ app.use("/relationships", relationshipsRoutes);
 app.use("/stories", storyRoutes);
 
 if (process.env.NODE_ENV !== 'production') {
-    // initStoryCleanupCron();
+    initStoryCleanupCron();
     app.listen(3000, () => {
         console.log("Server is running on port 3000");
     });
