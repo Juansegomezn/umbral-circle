@@ -65,9 +65,9 @@ export const Stories = () => {
         stories?.map((story) => (
             <div className="story" key={story.id} onClick={() => setSelectedStory(story)} style={{ cursor: 'pointer' }}>
               {story.contentType === 'video' ? (
-                <video src={`/upload/${story.contentUrl}`} muted playsInline />
+                <video src={story.contentUrl} muted playsInline />
               ) : (
-                <img src={`/upload/${story.contentUrl}`} alt={story.name} />
+                <img src={story.contentUrl} alt={story.name} />
               )}
               <span className="owner-name">{story.name}</span>
             </div>
