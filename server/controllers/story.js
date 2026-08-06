@@ -40,7 +40,7 @@ export const addStory = async (req, res) => {
     return res.status(200).json("Story has been created.");
   } catch (err) {
     console.error(err);
-    return res.status(500).json("Failed to create story.");
+    return res.status(500).json("Failed to create story. (demo for production)");
   }
 };
 
