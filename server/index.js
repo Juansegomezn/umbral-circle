@@ -8,7 +8,6 @@ import relationshipsRoutes from "./routes/relationships.js";
 import storyRoutes from "./routes/stories.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import multer from "multer";
 import dotenv from "dotenv";
 import { initStoryCleanupCron } from "./cron/storyCleanup.js";
 
@@ -18,9 +17,9 @@ const app = express();
 
 // middleware
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Credentials', true)
-    next()
-})
+    res.header('Access-Control-Allow-Credentials', true);
+    next();
+});
 
 const allowedOrigins = [
     "https://umbral-circle-client.vercel.app",
@@ -43,36 +42,6 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
-
-const storage = process.env.NODE_ENV === 'production'
-    ? multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, '/tmp');
-        },
-        filename: function (req, file, cb) {
-            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-            cb(null, file.fieldname + '-' + uniqueSuffix);
-        }
-    })
-    : multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, '../client/public/upload');
-        },
-        filename: function (req, file, cb) {
-            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-            cb(null, file.fieldname + '-' + uniqueSuffix);
-        }
-    });
-
-const upload = multer({ storage: storage })
-
-app.post("/upload", upload.single('file'), (req, res) => {
-    const file = req.file;
-    if (!file) {
-        return res.status(400).json("No file uploaded.");
-    }
-    res.status(200).json(file.filename);
-})
 
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);

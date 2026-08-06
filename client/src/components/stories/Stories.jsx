@@ -62,16 +62,22 @@ export const Stories = () => {
         {isLoading ? (
           <div className="story-loader"> <CircularProgress size={30} color="inherit" style={{ color: '#F43F5E' }} /> </div>
         ) : (
-        stories?.map((story) => (
-            <div className="story" key={story.id} onClick={() => setSelectedStory(story)} style={{ cursor: 'pointer' }}>
-              {story.contentType === 'video' ? (
-                <video src={story.contentUrl} muted playsInline />
-              ) : (
-                <img src={story.contentUrl} alt={story.name} />
-              )}
-              <span className="owner-name">{story.name}</span>
-            </div>
-          ))
+          stories?.map((story) => {
+            const mediaSrc = story.contentUrl.startsWith('http') 
+              ? story.contentUrl 
+              : `/upload/${story.contentUrl}`;
+
+            return (
+              <div className="story" key={story.id} onClick={() => setSelectedStory(story)} style={{ cursor: 'pointer' }}>
+                {story.contentType === 'video' ? (
+                  <video src={mediaSrc}/>
+                ) : (
+                  <img src={mediaSrc} alt={story.name}/>
+                )}
+                <span className="owner-name">{story.name}</span>
+              </div>
+            );
+          })
         )}
       </div>
 
