@@ -5,7 +5,7 @@ import fs from "fs";
 const isProduction = process.env.NODE_ENV === 'production';
 const uploadDir = path.join(process.cwd(), "..", "client", "public", "upload");
 
-const storage = isProduction 
+const storage = isProduction
   ? multer.memoryStorage()
   : multer.diskStorage({
       destination: (req, file, cb) => {

@@ -2,13 +2,9 @@ import { db } from "../connect.js";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import path from "path";
-import { createClient } from "@supabase/supabase-js";
+import { uploadToSupabase } from "../utils/supabaseStorage.js";
 
 const isProduction = process.env.NODE_ENV === 'production';
-
-const supabase = isProduction 
-  ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
-  : null;
 
 const getUserIdFromToken = (req) => {
   const token = req.cookies.accessToken;
@@ -26,44 +22,25 @@ export const addStory = async (req, res) => {
   if (!userId) return res.status(401).json("Not logged in!");
   if (!req.file) return res.status(400).json("No file uploaded!");
 
-  let contentUrl = "";
-  const isVideo = req.file.mimetype.startsWith("video");
-  const contentType = isVideo ? "video" : "image";
-
   try {
+    let contentUrl;
+
     if (isProduction) {
-      const fileExt = path.extname(req.file.originalname);
-      const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExt}`;
-
-      const { data, error } = await supabase.storage
-        .from("stories")
-        .upload(fileName, req.file.buffer, {
-          contentType: req.file.mimetype,
-          upsert: true,
-        });
-
-      if (error) throw error;
-
-      const { data: publicUrlData } = supabase.storage
-        .from("stories")
-        .getPublicUrl(fileName);
-
-      contentUrl = publicUrlData.publicUrl;
+      contentUrl = await uploadToSupabase(req.file);
     } else {
       contentUrl = req.file.filename;
     }
 
-    if (!contentUrl) {
-      return res.status(500).json("Could not determine file URL.");
-    }
+    const isVideo = req.file.mimetype.startsWith("video");
+    const contentType = isVideo ? "video" : "image";
 
     const q = 'INSERT INTO umbral.stories ("userId", "contentUrl", "contentType") VALUES ($1, $2, $3) RETURNING *';
-    await db.query(q, [userId, contentUrl, contentType]);
+    const data = await db.query(q, [userId, contentUrl, contentType]);
 
     return res.status(200).json("Story has been created.");
   } catch (err) {
-    console.error("Error adding story:", err);
-    return res.status(500).json(err.message || "Failed to process story upload.");
+    console.error(err);
+    return res.status(500).json("Failed to create story.");
   }
 };
 

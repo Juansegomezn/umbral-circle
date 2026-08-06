@@ -105,13 +105,21 @@ export const StoryViewer = ({ story, setOpen }) => {
         </div>
 
         {/* Content Wrapper */}
-        <div className="contentWrapper">
-          {story.contentType === "video" ? (
-            <video src={`/upload/${story.contentUrl}`} controls autoPlay playsInline />
-          ) : (
-            <img src={`/upload/${story.contentUrl}`} alt="Story Content" />
-          )}
-        </div>
+        {(() => {
+          const mediaSrc = story.contentUrl.startsWith('http')
+            ? story.contentUrl
+            : `/upload/${story.contentUrl}`;
+
+          return (
+            <div className="contentWrapper">
+              {story.contentType === "video" ? (
+                <video src={mediaSrc} controls autoPlay playsInline />
+              ) : (
+                <img src={mediaSrc} alt="Story Content" />
+              )}
+            </div>
+          );
+        })()}
 
         {/* Interaction Bar */}
         <div className="viewerFooter">
