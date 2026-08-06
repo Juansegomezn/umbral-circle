@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/authContext';
 import { UpdateModal } from '../../components/updateModal/UpdateModal';
+import { getImageUrl } from '../../utils/getImageUrl';
 
 export const Profile = () => {
   const { id } = useParams();
@@ -58,9 +59,18 @@ export const Profile = () => {
   return (
     <div className='profile'>
       <div className="images">
-        <img className='cover' src={userData?.coverPic?.includes("http") ? userData?.coverPic : "/upload/" + userData?.coverPic} alt="Background Image" />
-        <img className='profile-pic' src={userData?.profilePic?.includes("http") ? userData?.profilePic : "/upload/" + userData?.profilePic} alt="Profile Image" />
+        <img 
+            className='cover' 
+            src={getImageUrl(userData?.coverPic, "defaultCoverPic.jpg")} 
+            alt="Cover" 
+          />
+          <img 
+            className='profile-pic' 
+            src={getImageUrl(userData?.profilePic, "defaultProfilePic.png")} 
+            alt="Profile" 
+          />
       </div>
+
       <div className="profile-container">
         <div className="us-info">
           <div className="left">

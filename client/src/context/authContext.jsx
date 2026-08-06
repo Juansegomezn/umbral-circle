@@ -1,18 +1,30 @@
 import { createContext, useEffect, useState } from "react";
 import { makeRequest } from "../axios";
+import { getImageUrl } from "../utils/getImageUrl";
 
 export const AuthContext = createContext();
 
-export const AuthContextProvider = ({children}) => {
-  const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || null
-  );
+export const AuthContextProvider = ({ children }) => {
+  const formatUserData = (user) => {
+    if (!user) return null;
+    return {
+      ...user,
+      profilePic: getImageUrl(user.profilePic, "defaultProfilePic.png"),
+      coverPic: getImageUrl(user.coverPic, "defaultCoverPic.jpg"),
+    };
+  };
+
+  const [currentUser, setCurrentUser] = useState(() => {
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+    return formatUserData(savedUser);
+  });
 
   const login = async (inputs) => {
     const res = await makeRequest.post("/auth/login", inputs, {
       withCredentials: true
     });
-    setCurrentUser(res.data);
+    const formattedUser = formatUserData(res.data);
+    setCurrentUser(formattedUser);
   };
 
   const logout = async () => {
@@ -25,7 +37,11 @@ export const AuthContextProvider = ({children}) => {
   };
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(currentUser));
+    if (currentUser) {
+      localStorage.setItem("user", JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem("user");
+    }
   }, [currentUser]);
 
   useEffect(() => {
