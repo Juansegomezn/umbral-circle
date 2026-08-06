@@ -15,6 +15,7 @@ import { DarkModeContext } from '../../context/darkModeContext';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/authContext';
 import { makeRequest } from '../../axios';
+import { getImageUrl } from '../../utils/getImageUrl';
 
 export const Navbar = () => {
   const {toggle, darkMode} = useContext(DarkModeContext);
@@ -103,7 +104,7 @@ export const Navbar = () => {
                   setSearchText("");
                 }}
               >
-                <img src={user.profilePic} alt="" />
+                <img src={getImageUrl(user?.coverPic, "defaultCoverPic.jpg")} alt="" />
                 <span>{user.name}</span>
               </div>
             ))}
